@@ -1,0 +1,51 @@
+title: Dependency Hell
+description: Solving one issue at a time
+author: Oliver Kaiser
+github: https://github.com/kaisero
+about: I'm a Systems Engineer focusing on networking and automation. Opinions are my own.
+disqus_shortname: dependencyhell
+google_analytics: UA-90912607-1
+#avatar_url: /static/img/avatar.jpg
+
+enableTags: true
+tagarray: []
+
+collections:
+  project:
+    output: true
+    permalink: /project/:path/
+
+social:
+    - icon: fa-twitter
+      link: "https://twitter.com/xkaisero"
+    - icon: fa-linkedin
+      link: "https://www.linkedin.com/in/oliver-kaiser-71a59754"
+    - icon: fa-stack-exchange
+      link: "https://networkengineering.stackexchange.com/users/19610/kaisero"
+    - icon: fa-github
+      link: "https://github.com/kaisero"
+
+urls:
+    - text: About Me
+      url: /about/
+    #- text: My Projects
+      #url: /projects/
+    - text: RSS Feed
+      url: /feed.xml
+
+url: "https://dependencyhell.net"
+baseurl: ""
+paginate: 20
+per_page: 20
+paginate_path: "/page/:num/"
+markdown: kramdown
+gems:
+  - jekyll-paginate
+  - jekyll-gist
+
+compress_html:
+  clippings: all
+  comments: ["<!-- ", " -->"]
+  endings: all
+  ignore:
+    envs: ['development']
