@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>cscve45948 - Tag - Dependency Hell</title>
+        <link>https://dependencyhell.net/tags/cscve45948/</link>
+        <description>cscve45948 - Tag - Dependency Hell</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Fri, 04 Aug 2017 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/tags/cscve45948/" rel="self" type="application/rss+xml" /><item>
+    <title>FTD Bug - FTP transfer failing</title>
+    <link>https://dependencyhell.net/2017-08-05-ftd-vs-ftp/</link>
+    <pubDate>Fri, 04 Aug 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-08-05-ftd-vs-ftp/</guid>
+    <description><![CDATA[<p>After encountering a few bugs with how FTD handles FTP traffic I thought I woud do a little write up for engineers scratching their heads why FTP data traffic would not pass through cisco firewalls running FTD.</p>]]></description>
+</item></channel>
+</rss>

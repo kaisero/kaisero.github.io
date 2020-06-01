@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>release-notes - Tag - Dependency Hell</title>
+        <link>https://dependencyhell.net/tags/release-notes/</link>
+        <description>release-notes - Tag - Dependency Hell</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Fri, 27 Jan 2017 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/tags/release-notes/" rel="self" type="application/rss+xml" /><item>
+    <title>Firepower 6.2.0 Release</title>
+    <link>https://dependencyhell.net/2017-01-27-firepower-6.2-release/</link>
+    <pubDate>Fri, 27 Jan 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-01-27-firepower-6.2-release/</guid>
+    <description><![CDATA[<p>After some delays version 6.2.0 has been released for Cisco Firepower Systems. The version brings some long awaited and desperately needed features I have been waiting for quite some time. Lets jump right into what is new, what has changed and why FlexConfig should die a fast and swift death again.</p>]]></description>
+</item></channel>
+</rss>

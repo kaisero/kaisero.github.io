@@ -1,0 +1,22 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>bug - Tag - Dependency Hell</title>
+        <link>https://dependencyhell.net/tags/bug/</link>
+        <description>bug - Tag - Dependency Hell</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Sun, 27 Aug 2017 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/tags/bug/" rel="self" type="application/rss+xml" /><item>
+    <title>FMC Bug - Large Backup Files</title>
+    <link>https://dependencyhell.net/2017-08-27-large-fmc-backup/</link>
+    <pubDate>Sun, 27 Aug 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-08-27-large-fmc-backup/</guid>
+    <description><![CDATA[<p>I encountered an interesting bug in 6.2.0.2 which I would like to share with the community in case anybody else is having the same issue. On one of my FMC installations I found that the backups were rapidly growing from 2.5G to 9.5G in size. After some research and help from Cisco TAC we were able to pinpoint the issue and implement a workaround.</p>]]></description>
+</item><item>
+    <title>FTD Bug - FTP transfer failing</title>
+    <link>https://dependencyhell.net/2017-08-05-ftd-vs-ftp/</link>
+    <pubDate>Fri, 04 Aug 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-08-05-ftd-vs-ftp/</guid>
+    <description><![CDATA[<p>After encountering a few bugs with how FTD handles FTP traffic I thought I woud do a little write up for engineers scratching their heads why FTP data traffic would not pass through cisco firewalls running FTD.</p>]]></description>
+</item></channel>
+</rss>

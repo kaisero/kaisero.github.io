@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>identity - Tag - Dependency Hell</title>
+        <link>https://dependencyhell.net/tags/identity/</link>
+        <description>identity - Tag - Dependency Hell</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Sat, 14 Jan 2017 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/tags/identity/" rel="self" type="application/rss+xml" /><item>
+    <title>Troubleshooting Firepower User Identity</title>
+    <link>https://dependencyhell.net/2017-01-14-troubleshooting-firepower-identity/</link>
+    <pubDate>Sat, 14 Jan 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-01-14-troubleshooting-firepower-identity/</guid>
+    <description><![CDATA[<p>Troubleshooting user identity issues on firepower systems can be quite daunting at times if you do not know where exactly you should look for issues. After encountering many different problems I thought it might be a good idea write down what I have learned from various troubleshooting sessions since unfortunately the amount of available documentation is quite lacking.</p>]]></description>
+</item></channel>
+</rss>

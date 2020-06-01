@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>architecture - Tag - Dependency Hell</title>
+        <link>https://dependencyhell.net/tags/architecture/</link>
+        <description>architecture - Tag - Dependency Hell</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Mon, 10 Jul 2017 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/tags/architecture/" rel="self" type="application/rss+xml" /><item>
+    <title>Firepower Management Center HA</title>
+    <link>https://dependencyhell.net/2017-07-10-fmc-ha/</link>
+    <pubDate>Mon, 10 Jul 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-07-10-fmc-ha/</guid>
+    <description><![CDATA[<p>Configuring HA for FMC is pretty straight forward but how exactly does it work and how can we troubleshoot HA if it is not working correctly? In this post I will show you what FMC HA is doing behind the scenes and tools we have available to take a deeper look into the system and uncover issues.</p>]]></description>
+</item></channel>
+</rss>

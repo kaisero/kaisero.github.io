@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>si - Tag - Dependency Hell</title>
+        <link>https://dependencyhell.net/tags/si/</link>
+        <description>si - Tag - Dependency Hell</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Sat, 15 Apr 2017 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/tags/si/" rel="self" type="application/rss+xml" /><item>
+    <title>Firepower Security Intelligence</title>
+    <link>https://dependencyhell.net/2017-02-26-firepower-si/</link>
+    <pubDate>Sat, 15 Apr 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-02-26-firepower-si/</guid>
+    <description><![CDATA[<p>Security Intelligence (SI) is used to block connections based on reputation on firepower systems. It can be used to block traffic based on IP, DNS and URL and is useful as a first line of defense to blacklist undesirable connections from/to public ip addresses.</p>]]></description>
+</item></channel>
+</rss>

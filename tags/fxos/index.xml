@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>fxos - Tag - Dependency Hell</title>
+        <link>https://dependencyhell.net/tags/fxos/</link>
+        <description>fxos - Tag - Dependency Hell</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Sun, 27 Aug 2017 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/tags/fxos/" rel="self" type="application/rss+xml" /><item>
+    <title>Automating FX-OS Provisioning</title>
+    <link>https://dependencyhell.net/2017-08-27-automating-fxos-provisioning/</link>
+    <pubDate>Sun, 27 Aug 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-08-27-automating-fxos-provisioning/</guid>
+    <description><![CDATA[<p>In the last year I have installed a few FP 4100 and FP 9300 appliances which thought me one thing&hellip; Provisioning by hand takes too much time and should be automated to avoid inconsistent configuration and wasted hours waiting for upgrades to complete. Since a nearly feature complete REST API is available for FX-OS I started developing a small library to interface with the API and found the results to be very satisfying.</p>]]></description>
+</item></channel>
+</rss>

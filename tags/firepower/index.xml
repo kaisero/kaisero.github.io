@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>firepower - Tag - Dependency Hell</title>
+        <link>https://dependencyhell.net/tags/firepower/</link>
+        <description>firepower - Tag - Dependency Hell</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Thu, 26 Jan 2017 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/tags/firepower/" rel="self" type="application/rss+xml" /><item>
+    <title>Firepower Process Management</title>
+    <link>https://dependencyhell.net/2017-01-26-firepower-process-management/</link>
+    <pubDate>Thu, 26 Jan 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-01-26-firepower-process-management/</guid>
+    <description><![CDATA[<p>Have you ever been in a situation where you wanted to troubleshoot a certain firepower process? Tried to kill a process, to re-start it with some debug flags but it was already re-started automatically by process manager? Well pmtool is here to help. Using pmtool you can disable services, restart processes and check dependencies between components on firepower systems.</p>]]></description>
+</item></channel>
+</rss>
