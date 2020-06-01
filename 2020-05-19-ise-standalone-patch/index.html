@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Patching Identity Service Engine (Standalone) - Dependency Hell</title><meta name="Description" content=""><meta property="og:title" content="Patching Identity Service Engine (Standalone)" />
+<meta property="og:description" content="Patching Identity Service Engine (Standalone) Although it is easier to update ISE through the graphical user interface in this post we will use the CLI to install the newest patch to ISE 2.4. An advantage of utilizing the CLI is that we can control the order in which to install the patch to different nodes which is being taken care of automatically if the GUI is used to update ISE." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dependencyhell.net/2020-05-19-ise-standalone-patch/" />
+<meta property="article:published_time" content="2020-05-19T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-05-19T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Patching Identity Service Engine (Standalone)"/>
+<meta name="twitter:description" content="Patching Identity Service Engine (Standalone) Although it is easier to update ISE through the graphical user interface in this post we will use the CLI to install the newest patch to ISE 2.4. An advantage of utilizing the CLI is that we can control the order in which to install the patch to different nodes which is being taken care of automatically if the GUI is used to update ISE."/>
+<meta name="application-name" content="Dependency Hell">
+<meta name="apple-mobile-web-app-title" content="Dependency Hell"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://dependencyhell.net/2020-05-19-ise-standalone-patch/" /><link rel="prev" href="https://dependencyhell.net/2018-04-08-ftd-unsupported-features/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Patching Identity Service Engine (Standalone)",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dependencyhell.net\/2020-05-19-ise-standalone-patch\/"
+        },"genre": "posts","keywords": "upgrade","wordcount":  1009 ,
+        "url": "https:\/\/dependencyhell.net\/2020-05-19-ise-standalone-patch\/","datePublished": "2020-05-19T00:00:00+00:00","dateModified": "2020-05-19T00:00:00+00:00","author": {
+                "@type": "Person",
+                "name": "Oliver Kaiser"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Dependency Hell">Dependency Hell</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Dependency Hell"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Dependency Hell">Dependency Hell</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Dependency Hell">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Patching Identity Service Engine (Standalone)</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/identity-service-engine/"><i class="far fa-folder fa-fw"></i>identity-service-engine</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-05-19">2020-05-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1009 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#preperation">Preperation</a>
+      <ul>
+        <li><a href="#checksum-verification">Checksum verification</a></li>
+        <li><a href="#application-status">Application status</a></li>
+        <li><a href="#backup">Backup</a></li>
+        <li><a href="#upload-update">Upload update</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#verification">Verification</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="patching-identity-service-engine-standalone">Patching Identity Service Engine (Standalone)</h1>
+<p>Although it is easier to update ISE through the graphical user interface in this
+post we will use the CLI to install the newest patch to ISE 2.4. An advantage
+of utilizing the CLI is that we can control the order in which to install the
+patch to different nodes which is being taken care of automatically if the GUI
+is used to update ISE.</p>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">ISE patches are cumulative. You can directly upgrade to the latest patch release</div>
+        </div>
+    </div>
+<h2 id="preperation">Preperation</h2>
+<p>Before updating ISE make sure you go over all the steps for a smooth
+upgrade expierence.</p>
+<h3 id="checksum-verification">Checksum verification</h3>
+<p>Making sure the patch file is not corrupted could cost you quite some time
+during a maintenance window. Verifying the file is quite easy and can be done by
+generating an md5 checksum from the update file and comparing it to the hash listed
+on the Cisco download page</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># md5sum ise-patchbundle-2.4.0.357-Patch12-20042808.SPA.x86_64.tar.gz 
+23103a9cae355ceb860c60481ff30cb2
+</code></pre></td></tr></table>
+</div>
+</div><p>After generating the hash navigate to the Cisco Download page and compare it to
+the md5 hash listed when you hover over the update file.</p>
+<figure><a class="lightgallery" href="/img/ise-install-patch/ise-24-patch12-checksum.png" title="/img/ise-install-patch/ise-24-patch12-checksum.png" data-thumbnail="/img/ise-install-patch/ise-24-patch12-checksum.png" data-sub-html="<h2>Cisco Downloads (image)</h2>">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/ise-install-patch/ise-24-patch12-checksum.png"
+            data-srcset="/img/ise-install-patch/ise-24-patch12-checksum.png, /img/ise-install-patch/ise-24-patch12-checksum.png 1.5x, /img/ise-install-patch/ise-24-patch12-checksum.png 2x"
+            data-sizes="auto"
+            alt="/img/ise-install-patch/ise-24-patch12-checksum.png" />
+    </a><figcaption class="image-caption">Cisco Downloads (<code>image</code>)</figcaption>
+    </figure>
+<h3 id="application-status">Application status</h3>
+<p>Having a basic idea of which processes should be running is a good indicator for
+verifying that the update has completed successfully. A patch release should not
+include any new features, so the processes you see running after the upgrade
+should match the ones that were running before the update process.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ise/admin# show application status ise
+
+ISE PROCESS NAME                       STATE            PROCESS ID  
+--------------------------------------------------------------------
+Database Listener                      running          12937       
+Database Server                        running          98 PROCESSES
+Application Server                     running          20062       
+Profiler Database                      running          15154       
+ISE Indexing Engine                    running          21693       
+AD Connector                           running          23072       
+M&amp;T Session Database                   running          14940       
+M&amp;T Log Collector                      running          20364       
+M&amp;T Log Processor                      running          20265       
+Certificate Authority Service          running          22821       
+EST Service                            running          29203       
+SXP Engine Service                     disabled                     
+Docker Daemon                          running          16012       
+TC-NAC Service                         disabled        
+
+Wifi Setup Helper Container            disabled                     
+pxGrid Infrastructure Service          disabled                     
+pxGrid Publisher Subscriber Service    disabled                     
+pxGrid Connection Manager              disabled                     
+pxGrid Controller                      disabled                     
+PassiveID WMI Service                  disabled                     
+PassiveID Syslog Service               disabled                     
+PassiveID API Service                  disabled                     
+PassiveID Agent Service                disabled                     
+PassiveID Endpoint Service             disabled                     
+PassiveID SPAN Service                 disabled                     
+DHCP Server (dhcpd)                    disabled                     
+DNS Server (named)                     disabled                     
+ISE RabbitMQ Container                 running          16313  
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="backup">Backup</h3>
+<p>Always make sure you have an up2date backup before proceeding with the update.
+Of course there are many quality assurance tests that are run on the vendors
+side but not having an option to restore after a failed upgrade (for example due
+to power loss or a bug in the update bundle) can be quite a pain, so make sure
+you generate a backup file</p>
+<a class="lightgallery" href="/img/ise-install-patch/ise-backup-01.png" title="/img/ise-install-patch/ise-backup-01.png" data-thumbnail="/img/ise-install-patch/ise-backup-01.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/ise-install-patch/ise-backup-01.png"
+            data-srcset="/img/ise-install-patch/ise-backup-01.png, /img/ise-install-patch/ise-backup-01.png 1.5x, /img/ise-install-patch/ise-backup-01.png 2x"
+            data-sizes="auto"
+            alt="/img/ise-install-patch/ise-backup-01.png" />
+    </a>
+<a class="lightgallery" href="/img/ise-install-patch/ise-backup-02.png" title="/img/ise-install-patch/ise-backup-02.png" data-thumbnail="/img/ise-install-patch/ise-backup-02.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/ise-install-patch/ise-backup-02.png"
+            data-srcset="/img/ise-install-patch/ise-backup-02.png, /img/ise-install-patch/ise-backup-02.png 1.5x, /img/ise-install-patch/ise-backup-02.png 2x"
+            data-sizes="auto"
+            alt="/img/ise-install-patch/ise-backup-02.png" />
+    </a>
+<a class="lightgallery" href="/img/ise-install-patch/ise-backup-03.png" title="/img/ise-install-patch/ise-backup-03.png" data-thumbnail="/img/ise-install-patch/ise-backup-03.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/ise-install-patch/ise-backup-03.png"
+            data-srcset="/img/ise-install-patch/ise-backup-03.png, /img/ise-install-patch/ise-backup-03.png 1.5x, /img/ise-install-patch/ise-backup-03.png 2x"
+            data-sizes="auto"
+            alt="/img/ise-install-patch/ise-backup-03.png" />
+    </a>
+<h3 id="upload-update">Upload update</h3>
+<p>To upload the package we will use a sftp repository on a management server
+and define a disk repository which we will reference later to upload the
+update file to</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ise/admin# configure terminal
+ise/admin(config)# repository mgmtsrv
+ise/admin(config-Repository)# url sftp://&lt;ipaddress&gt;
+ise/admin(config-Repository)# user &lt;username&gt; password plain &lt;password&gt;
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ise/admin(config)# repository disk
+ise/admin(config-Repository)# url disk:
+</code></pre></td></tr></table>
+</div>
+</div><p>After defining the repository we need to add the ssh host key to ise</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ise/admin# crypto host_key add host 10.0.31.131
+host key fingerprint added
+# Host 10.0.31.131 found: line 1 
+10.0.31.131 RSA SHA256:dJh4nkb0LRfpWZgHCrBiX+FMQSeZmhHPT9jCj0u+xXE 
+</code></pre></td></tr></table>
+</div>
+</div><p>Last but not least we can upload the package form <code>mgmtsrv</code> to the local
+<code>disk</code>repository</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ise/admin# copy sftp://&lt;ipaddress&gt;/ise-patchbundle-2.4.0.357-Patch12-20042808.SPA.x86_64.tar.gz disk:/
+Username: &lt;username&gt;
+Password: &lt;password&gt;
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="installation">Installation</h3>
+<p>After taking care of all the prerequsites we can finally go ahead and install
+the latest patch.</p>
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">ISE will restart after installing the patch!</div>
+        </div>
+    </div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ise01/admin# patch install ise-patchbundle-2.4.0.357-Patch12-20042808.SPA.x86_64.tar.gz disk
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">% Warning: Patch will be installed only on this node. Install using Primary Administration node GUI to install on all nodes in deployment. Continue? (yes/no) [yes] ? yes
+Save the current ADE-OS running configuration? (yes/no) [yes] ? yes
+Generating configuration...
+Saved the ADE-OS running configuration to startup successfully
+Initiating Application Patch installation...
+
+Getting bundle to local machine...
+Unbundling Application Package...
+Verifying Application Signature...
+Patch successfully installed
+
+% This application Install or Upgrade requires reboot, rebooting now...
+Broadcast message from root@ise01 (pts/1) (Tue May 19 11:47:36 2020):
+
+The system is going down for reboot NOW
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="verification">Verification</h2>
+<p>After ISE is up and running again we can login to cli again and verify that
+the patch was installed successfully and all service are up and running again</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ise01/admin# show application version ise
+
+Cisco Identity Services Engine
+---------------------------------------------
+Version      : 2.4.0.357
+Build Date   : Thu Mar 22 19:01:26 2018
+Install Date : Wed Jan 16 13:45:08 2019
+
+Cisco Identity Services Engine Patch 
+---------------------------------------------
+Version      : 5
+Install Date : Fri Jan 18 19:25:00 2019
+
+Cisco Identity Services Engine Patch 
+---------------------------------------------
+Version      : 12
+Install Date : Tue May 19 11:46:27 2020
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ise/admin# show application status ise
+
+ISE PROCESS NAME                       STATE            PROCESS ID  
+--------------------------------------------------------------------
+Database Listener                      running          7246        
+Database Server                        running          113 PROCESSES
+Application Server                     running          15037       
+Profiler Database                      running          9420        
+ISE Indexing Engine                    running          16668       
+AD Connector                           running          20423       
+M&amp;T Session Database                   running          9172        
+M&amp;T Log Collector                      running          15363       
+M&amp;T Log Processor                      running          15246       
+Certificate Authority Service          running          17818       
+EST Service                            running          18154       
+SXP Engine Service                     disabled                     
+Docker Daemon                          running          10390       
+TC-NAC Service                         disabled        
+
+Wifi Setup Helper Container            disabled                     
+pxGrid Infrastructure Service          disabled                 
+pxGrid Publisher Subscriber Service    disabled                 
+pxGrid Connection Manager              disabled                 
+pxGrid Controller                      disabled                 
+PassiveID WMI Service                  disabled                 
+PassiveID Syslog Service               disabled                 
+PassiveID API Service                  disabled                 
+PassiveID Agent Service                disabled                 
+PassiveID Endpoint Service             disabled                 
+PassiveID SPAN Service                 disabled 
+DHCP Server (dhcpd)                    disabled                     
+DNS Server (named)                     disabled                     
+ISE RabbitMQ Container                 running          11501
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-05-19</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dependencyhell.net/2020-05-19-ise-standalone-patch/" data-title="Patching Identity Service Engine (Standalone)" data-via="https://twitter.com/xkaisero" data-hashtags="upgrade"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dependencyhell.net/2020-05-19-ise-standalone-patch/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/upgrade/">upgrade</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2018-04-08-ftd-unsupported-features/" class="prev" rel="prev" title="FTD Feature Limitations"><i class="fas fa-angle-left fa-fw"></i>FTD Feature Limitations</a></div>
+</div>
+<div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript">Disqus</a>.
+            </noscript></div></article></div>
+            </main></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="https://dependencyhell.disqus.com/embed.js" defer></script><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', 'UA-90912607-1', { 'anonymize_ip': true });
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-90912607-1" async></script></body>
+</html>

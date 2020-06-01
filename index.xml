@@ -1,0 +1,82 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Dependency Hell</title>
+        <link>https://dependencyhell.net/</link>
+        <description>Dependency Hell</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Tue, 19 May 2020 00:00:00 &#43;0000</lastBuildDate>
+            <atom:link href="https://dependencyhell.net/index.xml" rel="self" type="application/rss+xml" />
+        <item>
+    <title>Patching Identity Service Engine (Standalone)</title>
+    <link>https://dependencyhell.net/2020-05-19-ise-standalone-patch/</link>
+    <pubDate>Tue, 19 May 2020 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2020-05-19-ise-standalone-patch/</guid>
+    <description><![CDATA[Patching Identity Service Engine (Standalone) Although it is easier to update ISE through the graphical user interface in this post we will use the CLI to install the newest patch to ISE 2.4. An advantage of utilizing the CLI is that we can control the order in which to install the patch to different nodes which is being taken care of automatically if the GUI is used to update ISE.]]></description>
+</item><item>
+    <title>FTD Feature Limitations</title>
+    <link>https://dependencyhell.net/2018-04-08-ftd-unsupported-features/</link>
+    <pubDate>Fri, 06 Apr 2018 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2018-04-08-ftd-unsupported-features/</guid>
+    <description><![CDATA[<p>Since I see this topic coming up every now and then I thought it would be a good idea to create an overview of unsupported features for FTD in comparison to ASA.</p>]]></description>
+</item><item>
+    <title>Automating ACP Changes</title>
+    <link>https://dependencyhell.net/2017-08-27-automating-acp-bulk-changes/</link>
+    <pubDate>Sun, 27 Aug 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-08-27-automating-acp-bulk-changes/</guid>
+    <description><![CDATA[<p>In the last few months I have found many people on the cisco support forums asking for a way to do bulk changes to their access control policy in FMC. Since the UI does not provide this functionality we can make use of the REST API of FMC to accomplish this task</p>]]></description>
+</item><item>
+    <title>Automating FX-OS Provisioning</title>
+    <link>https://dependencyhell.net/2017-08-27-automating-fxos-provisioning/</link>
+    <pubDate>Sun, 27 Aug 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-08-27-automating-fxos-provisioning/</guid>
+    <description><![CDATA[<p>In the last year I have installed a few FP 4100 and FP 9300 appliances which thought me one thing&hellip; Provisioning by hand takes too much time and should be automated to avoid inconsistent configuration and wasted hours waiting for upgrades to complete. Since a nearly feature complete REST API is available for FX-OS I started developing a small library to interface with the API and found the results to be very satisfying.</p>]]></description>
+</item><item>
+    <title>FMC Bug - Large Backup Files</title>
+    <link>https://dependencyhell.net/2017-08-27-large-fmc-backup/</link>
+    <pubDate>Sun, 27 Aug 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-08-27-large-fmc-backup/</guid>
+    <description><![CDATA[<p>I encountered an interesting bug in 6.2.0.2 which I would like to share with the community in case anybody else is having the same issue. On one of my FMC installations I found that the backups were rapidly growing from 2.5G to 9.5G in size. After some research and help from Cisco TAC we were able to pinpoint the issue and implement a workaround.</p>]]></description>
+</item><item>
+    <title>FTD Bug - FTP transfer failing</title>
+    <link>https://dependencyhell.net/2017-08-05-ftd-vs-ftp/</link>
+    <pubDate>Fri, 04 Aug 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-08-05-ftd-vs-ftp/</guid>
+    <description><![CDATA[<p>After encountering a few bugs with how FTD handles FTP traffic I thought I woud do a little write up for engineers scratching their heads why FTP data traffic would not pass through cisco firewalls running FTD.</p>]]></description>
+</item><item>
+    <title>Troubleshooting Firepower Upgrade</title>
+    <link>https://dependencyhell.net/2017-08-04-troubleshooting-firepower-upgrade/</link>
+    <pubDate>Fri, 04 Aug 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-08-04-troubleshooting-firepower-upgrade/</guid>
+    <description><![CDATA[<p>At some point we have all come across update issues with error messages like &ldquo;Update install failed.&rdquo;, without any further details available. In my opinion there should be more details on an UI to further troubleshoot issues like that, but when it comes to upgrade procedures on FMC that is about it.</p>
+<p>So how exactly should we start analyzing upgrade issues on FMC? Although the UI output is rather generic there is lots of information to be found using the CLI. Each upgrade procedure consists of a variaty of scripts that are being executed on the device that is being upgraded.</p>]]></description>
+</item><item>
+    <title>Firepower Management Center HA</title>
+    <link>https://dependencyhell.net/2017-07-10-fmc-ha/</link>
+    <pubDate>Mon, 10 Jul 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-07-10-fmc-ha/</guid>
+    <description><![CDATA[<p>Configuring HA for FMC is pretty straight forward but how exactly does it work and how can we troubleshoot HA if it is not working correctly? In this post I will show you what FMC HA is doing behind the scenes and tools we have available to take a deeper look into the system and uncover issues.</p>]]></description>
+</item><item>
+    <title>Dumping Firepower AC-Policy</title>
+    <link>https://dependencyhell.net/2017-07-09-dumping-firepower-acp/</link>
+    <pubDate>Sun, 09 Jul 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-07-09-dumping-firepower-acp/</guid>
+    <description><![CDATA[<p>Have you ever been in a situation where you wanted to verify the actual access control policy deployed to your sensor?
+When I first started looking around on how to do this from a firepower sensor cli I found the following command  <code>show access-control-config</code> which displays a human readable version of the full access control policy. After some updates that misbehaved I was looking for an easy method to dump my policy before starting an upgrade so I can do a <code>diff</code> between my policy before the upgrade and after the upgrade.</p>]]></description>
+</item><item>
+    <title>AnyConnect for FTD</title>
+    <link>https://dependencyhell.net/2017-05-27-anyconnect-for-ftd/</link>
+    <pubDate>Sat, 27 May 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2017-05-27-anyconnect-for-ftd/</guid>
+    <description><![CDATA[<p>AnyConnect has been a high priority roadmap item for Firepower Threat Defense and was planned to be released in version 6.2.1 with the new Firepower 2100 appliances in april. After some delays 6.2.1 was released on the 15th of May and firepower 2100 orders started shipping. So were are we standing at the moment? What platform support AnyConnect with FTD and what features are really working?</p>]]></description>
+</item></channel>
+</rss>

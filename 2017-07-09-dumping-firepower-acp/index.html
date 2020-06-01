@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Dumping Firepower AC-Policy - Dependency Hell</title><meta name="Description" content=""><meta property="og:title" content="Dumping Firepower AC-Policy" />
+<meta property="og:description" content="Have you ever been in a situation where you wanted to verify the actual access control policy deployed to your sensor?
+When I first started looking around on how to do this from a firepower sensor cli I found the following command  show access-control-config which displays a human readable version of the full access control policy. After some updates that misbehaved I was looking for an easy method to dump my policy before starting an upgrade so I can do a diff between my policy before the upgrade and after the upgrade." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dependencyhell.net/2017-07-09-dumping-firepower-acp/" />
+<meta property="article:published_time" content="2017-07-09T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-07-09T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Dumping Firepower AC-Policy"/>
+<meta name="twitter:description" content="Have you ever been in a situation where you wanted to verify the actual access control policy deployed to your sensor?
+When I first started looking around on how to do this from a firepower sensor cli I found the following command  show access-control-config which displays a human readable version of the full access control policy. After some updates that misbehaved I was looking for an easy method to dump my policy before starting an upgrade so I can do a diff between my policy before the upgrade and after the upgrade."/>
+<meta name="application-name" content="Dependency Hell">
+<meta name="apple-mobile-web-app-title" content="Dependency Hell"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://dependencyhell.net/2017-07-09-dumping-firepower-acp/" /><link rel="prev" href="https://dependencyhell.net/2017-05-27-anyconnect-for-ftd/" /><link rel="next" href="https://dependencyhell.net/2017-07-10-fmc-ha/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Dumping Firepower AC-Policy",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dependencyhell.net\/2017-07-09-dumping-firepower-acp\/"
+        },"genre": "posts","keywords": "automation, troubleshooting","wordcount":  328 ,
+        "url": "https:\/\/dependencyhell.net\/2017-07-09-dumping-firepower-acp\/","datePublished": "2017-07-09T00:00:00+00:00","dateModified": "2017-07-09T00:00:00+00:00","author": {
+                "@type": "Person",
+                "name": "Oliver Kaiser"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Dependency Hell">Dependency Hell</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Dependency Hell"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Dependency Hell">Dependency Hell</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Dependency Hell">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Dumping Firepower AC-Policy</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-07-09">2017-07-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;328 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents"></nav></div>
+            </div><div class="content" id="content"><p>Have you ever been in a situation where you wanted to verify the actual access control policy deployed to your sensor?
+When I first started looking around on how to do this from a firepower sensor cli I found the following command  <code>show access-control-config</code> which displays a human readable version of the full access control policy. After some updates that misbehaved I was looking for an easy method to dump my policy before starting an upgrade so I can do a <code>diff</code> between my policy before the upgrade and after the upgrade.</p>
+<p>At first I had to find out a way to dump the <code>show access-control-config</code> output into a file so I switched to bash aka expert mode using the <code>expert</code> command on sfcli. I located the sfcli.pl binary at <code>/ngfw/var/sf/bin</code> on my FTD device and found that it referenced some libraries in SF::CLI. After some searching through the filesystem I came across all the CLI binaries at <code>/ngfw/Volume/6.2.0/sf/lib/perl/5.10.1/SF/CLI/</code> and started analyzing the <code>firewall.pm</code>. I found that I could call the <code>show access-control-config</code> command using the following sfcli parameters:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">sfcli.pl show firewall
+</code></pre></td></tr></table>
+</div>
+</div><p>The last step was piping the output to a file so I could use <code>vi</code> and <code>diff</code> to analyze the policy</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">sfcli.pl show firewall &gt; /var/tmp/access-control-policy.dump
+</code></pre></td></tr></table>
+</div>
+</div><p>Using bash I found a variety of use cases that help me during troubleshooting sessions</p>
+<ul>
+<li>
+<p>Searching the deployed policy using <code>grep</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">sfcli.pl show firewall | grep &lt;filter&gt;
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Verifying rule live hitcount of a firewall rule using the <code>watch</code> command</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">watch &#39;sfcli.pl show firewall | grep -A 12 &#34;Rule\: &lt;MY-RULE-NAME&gt;&#34;&#39;
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Diffing policies after upgrades to make sure there hasn&rsquo;t been any bug that caused my policy to change</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">diff /var/tmp/access-control-policy.dump /var/tmp/access-control-policy2.dump
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<p>Using standard linux tools to automate troubleshooting steps can be quite helpful. I will try to find more examples on how I can combine sfcli and bash to get better insights into the system and spot issues quicker&hellip; more blog posts will follow soon. :)</p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2017-07-09</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dependencyhell.net/2017-07-09-dumping-firepower-acp/" data-title="Dumping Firepower AC-Policy" data-via="https://twitter.com/xkaisero" data-hashtags="automation,troubleshooting"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dependencyhell.net/2017-07-09-dumping-firepower-acp/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/automation/">automation</a>,&nbsp;<a href="/tags/troubleshooting/">troubleshooting</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2017-05-27-anyconnect-for-ftd/" class="prev" rel="prev" title="AnyConnect for FTD"><i class="fas fa-angle-left fa-fw"></i>AnyConnect for FTD</a>
+            <a href="/2017-07-10-fmc-ha/" class="next" rel="next" title="Firepower Management Center HA">Firepower Management Center HA<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript">Disqus</a>.
+            </noscript></div></article></div>
+            </main></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="https://dependencyhell.disqus.com/embed.js" defer></script><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', 'UA-90912607-1', { 'anonymize_ip': true });
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-90912607-1" async></script></body>
+</html>

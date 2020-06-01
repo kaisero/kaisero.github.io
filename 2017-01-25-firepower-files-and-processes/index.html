@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Firepower Files and Processes - Dependency Hell</title><meta name="Description" content=""><meta property="og:title" content="Firepower Files and Processes" />
+<meta property="og:description" content="Since I had to use the root shell various times for troubleshooting  on firepower systems, I  decided to document some of the various binaries and logfiles that are available on FMC and firepower sensors." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dependencyhell.net/2017-01-25-firepower-files-and-processes/" />
+<meta property="article:published_time" content="2017-01-25T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-01-25T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Firepower Files and Processes"/>
+<meta name="twitter:description" content="Since I had to use the root shell various times for troubleshooting  on firepower systems, I  decided to document some of the various binaries and logfiles that are available on FMC and firepower sensors."/>
+<meta name="application-name" content="Dependency Hell">
+<meta name="apple-mobile-web-app-title" content="Dependency Hell"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://dependencyhell.net/2017-01-25-firepower-files-and-processes/" /><link rel="prev" href="https://dependencyhell.net/2017-01-24-troubleshooting-firepower-url-filtering/" /><link rel="next" href="https://dependencyhell.net/2017-01-26-firepower-process-management/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Firepower Files and Processes",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dependencyhell.net\/2017-01-25-firepower-files-and-processes\/"
+        },"genre": "posts","keywords": "troubleshooting","wordcount":  659 ,
+        "url": "https:\/\/dependencyhell.net\/2017-01-25-firepower-files-and-processes\/","datePublished": "2017-01-25T00:00:00+00:00","dateModified": "2017-01-25T00:00:00+00:00","author": {
+                "@type": "Person",
+                "name": "Oliver Kaiser"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Dependency Hell">Dependency Hell</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Dependency Hell"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Dependency Hell">Dependency Hell</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Dependency Hell">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Firepower Files and Processes</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-01-25">2017-01-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;659 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#disclaimer">Disclaimer</a></li>
+    <li><a href="#firepower-management-center">FirePOWER Management Center</a>
+      <ul>
+        <li><a href="#processes--binaries">Processes &amp; Binaries</a></li>
+        <li><a href="#configuration-files">Configuration Files</a></li>
+        <li><a href="#log-files">Log Files</a></li>
+      </ul>
+    </li>
+    <li><a href="#firepower-threat-defense">FirePOWER Threat Defense</a>
+      <ul>
+        <li><a href="#processes--binaries-1">Processes &amp; Binaries</a></li>
+        <li><a href="#configuration-files-1">Configuration Files</a></li>
+        <li><a href="#log-files-1">Log Files</a></li>
+        <li><a href="#other-files">Other Files</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>Since I had to use the root shell various times for troubleshooting  on firepower systems, I  decided to document some of the various binaries and logfiles that are available on FMC and firepower sensors.</p>
+<p>The following list only containts an overview of the various tools you can find on fmc and ftd shell. In the future I will create blog posts for various items listed here to explain what they are doing and how to use them.</p>
+<h2 id="disclaimer">Disclaimer</h2>
+<p>This list of configuration files, binaries, processes and log files has been created for anyone who wants to take a deeper look into the system. Keep in mind that this list is not a complete reference and only consists of elements I found useful. Before touching any binaries and processes in production environments make sure you really know what you are doing. Descriptions for various files may not be entirely correct since many of the listed tools are not documented by Cisco in any way for customers and partners. If you spot any errors just let me know.</p>
+<h2 id="firepower-management-center">FirePOWER Management Center</h2>
+<h3 id="processes--binaries">Processes &amp; Binaries</h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/usr/local/sf/bin/adi</td>
+<td>Identity Process (Active Directory/pxGRID/User Agent)</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/syncd.pl</td>
+<td>HA Daemon for FMC High Availability</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/CloudAgent</td>
+<td>Cloud Agent (AMP, URL Filtering, SI)</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/sftunnel</td>
+<td>Management SSL Tunnel</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/sftunnel_status.pl</td>
+<td>Check sftunnel status</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/pmtool</td>
+<td>FMC Management Binary (Control Processes, Display Process Health, etc.)</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/stats_unified.pl</td>
+<td>Check sftunnel event transfer status</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/manage_estreamer.pl</td>
+<td>Manage eStreamer</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/manage_pruning.pl</td>
+<td>Manage pruning (e.g. clear event db)</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/manage_HADC.pl</td>
+<td>Manage FMC High Availability</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/troubleshoot_HADC.pl</td>
+<td>Troubleshoot FMC High Availability</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/OmniQuery.pl</td>
+<td>Connect to Sybase Database</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/ids_event_db_info.pl</td>
+<td>Check IDS event rate of the last hour</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/eo_tool</td>
+<td>Object Management Tool of FMC application. Do not edit objects if you do not know what you are doing</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/pigtail</td>
+<td>Tail various logfiles for troubleshooting</td>
+</tr>
+<tr>
+<td>/usr/local/sf/bin/u2dump</td>
+<td>Dump user identity mappings into a human readable format</td>
+</tr>
+</tbody>
+</table>
+<h3 id="configuration-files">Configuration Files</h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/etc/sf/PM.conf</td>
+<td>Process Manager configuration</td>
+</tr>
+<tr>
+<td>/etc/sf/ADI.conf</td>
+<td>Identity Process configuration</td>
+</tr>
+<tr>
+<td>/etc/sf/sftunnel.conf</td>
+<td>SSL Tunnel configuration</td>
+</tr>
+<tr>
+<td>/etc/sf/fireAMP_proxy.conf</td>
+<td>AMP Proxy Settings</td>
+</tr>
+<tr>
+<td>/etc/sf/ims.conf</td>
+<td>Environment Variables</td>
+</tr>
+<tr>
+<td>/etc/sf/ims-data.conf</td>
+<td>Snort Authentication Credentials</td>
+</tr>
+<tr>
+<td>/etc/sf/bca.cfg</td>
+<td>Brightcloud URL Filtering</td>
+</tr>
+<tr>
+<td>/etc/sf/cloudagent.conf</td>
+<td>Cloud Agent (AMP, URL Filtering, SI)</td>
+</tr>
+<tr>
+<td>/etc/sf/iprep_sources.conf</td>
+<td>Security Intelligence IP Feeds</td>
+</tr>
+<tr>
+<td>/etc/sf/dns_sources.conf</td>
+<td>Security Intelligence DNS Feeds</td>
+</tr>
+<tr>
+<td>/etc/sf/dns_cache.conf</td>
+<td>DNS Caching Options</td>
+</tr>
+<tr>
+<td>/etc/sf/network-amp.conf</td>
+<td>AMP for Network Settings</td>
+</tr>
+<tr>
+<td>/etc/sf/amp-stunnel.conf</td>
+<td>AMP Cloud Settings</td>
+</tr>
+<tr>
+<td>/etc/sf/sandbox_cloud.conf</td>
+<td>Threatgrid Cloud Settings</td>
+</tr>
+<tr>
+<td>/etc/sf/sandbox_file_size.cfg</td>
+<td>Threatgrid max Filesize</td>
+</tr>
+<tr>
+<td>/etc/sf/geo_updates.conf</td>
+<td>Geo-IP Update Settings</td>
+</tr>
+<tr>
+<td>/etc/sf/seu_versions.conf</td>
+<td>Snort Version</td>
+</tr>
+<tr>
+<td>/etc/sf/email.conf</td>
+<td>Mail settings</td>
+</tr>
+<tr>
+<td>/etc/sf/msmtprc</td>
+<td>Mail setting details</td>
+</tr>
+<tr>
+<td>/etc/sf/patch_history</td>
+<td>Patch History</td>
+</tr>
+<tr>
+<td>/etc/sf/sf-version</td>
+<td>OS / APP Version</td>
+</tr>
+<tr>
+<td>/usr/local/sf/updates/</td>
+<td>Update Directory</td>
+</tr>
+</tbody>
+</table>
+<h3 id="log-files">Log Files</h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/var/log/messages</td>
+<td>Logging for various proccesses</td>
+</tr>
+<tr>
+<td>/usr/local/sf/cloud_download/tmp/url_db_dl.log</td>
+<td>Brightcloud Database Download Log</td>
+</tr>
+<tr>
+<td>/var/log/urldb_log</td>
+<td>Brightcloud Database Download Log</td>
+</tr>
+<tr>
+<td>/var/log/iprep.log</td>
+<td>Security Intelligence Feed Download Status Log</td>
+</tr>
+<tr>
+<td>/var/log/smart_agent</td>
+<td>Smart Licensing Agent Log</td>
+</tr>
+<tr>
+<td>/var/log/sch.log</td>
+<td>Call Home Log</td>
+</tr>
+<tr>
+<td>/var/log/ntp.log</td>
+<td>NTP Server Connections</td>
+</tr>
+<tr>
+<td>/var/log/process_stdout.log</td>
+<td>STDOUT Output of Processes</td>
+</tr>
+<tr>
+<td>/var/log/process_stderr.log</td>
+<td>STDERR Output of Processes</td>
+</tr>
+<tr>
+<td>/var/log/CSMAgent.log</td>
+<td>CSM related access logs</td>
+</tr>
+<tr>
+<td>/var/log/mojo.log</td>
+<td>Mojo Perl Webserver Logs</td>
+</tr>
+<tr>
+<td>/var/log/syncd.log</td>
+<td>High Availability Log (FMC HA)</td>
+</tr>
+<tr>
+<td>/var/log/sf/<version>/status.log</td>
+<td>Status Log for FMC upgrade</td>
+</tr>
+<tr>
+<td>/var/log/sf/<version>/000_start/*</td>
+<td>Logs for actions taken before upgrade is started</td>
+</tr>
+<tr>
+<td>/var/log/sf/<version>/200_pre/*</td>
+<td>Logs for actions taken to start update</td>
+</tr>
+<tr>
+<td>/var/log/sf/<version>/300_os/*</td>
+<td>Update logs for Fire Linux OS upgrade</td>
+</tr>
+</tbody>
+</table>
+<h2 id="firepower-threat-defense">FirePOWER Threat Defense</h2>
+<h3 id="processes--binaries-1">Processes &amp; Binaries</h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/ngfw/usr/local/sf/bin/pmtool</td>
+<td>FirePOWER Management Binary (Control Processes, Display Process Health, etc.)</td>
+</tr>
+<tr>
+<td>/ngfw/usr/local/sf/bin/CloudAgent</td>
+<td>Cloud Agent (AMP, URL Filtering, SI)</td>
+</tr>
+<tr>
+<td>/ngfw/var/cisco/ngfwWebUi/tomcat/bin/ngfw_onbox_start_tomcat.sh</td>
+<td>Onboard Web UI (FDM)</td>
+</tr>
+<tr>
+<td>/ngfw/usr/local/sf/bin/sftunnel</td>
+<td>Management SSL Tunnel</td>
+</tr>
+<tr>
+<td>/ngfw/usr/local/sf/bin/sf_troubleshoot.pl</td>
+<td>Generate troubleshooting file for sensor. Saved to /ngfw/var/common</td>
+</tr>
+</tbody>
+</table>
+<h3 id="configuration-files-1">Configuration Files</h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/etc/sf/bca.conf</td>
+<td>URL Filtering Settings</td>
+</tr>
+<tr>
+<td>/etc/sf/sandbox_cloud.conf</td>
+<td>ThreatGRID Settings</td>
+</tr>
+<tr>
+<td>/etc/sf/cloudagent.conf</td>
+<td>AMP and SI Settings</td>
+</tr>
+<tr>
+<td>/etc/sf/patch_history</td>
+<td>Patch History</td>
+</tr>
+</tbody>
+</table>
+<h3 id="log-files-1">Log Files</h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/ngfw/var/log/process_stderr.log</td>
+<td>STDERR Output of FTD Processes</td>
+</tr>
+<tr>
+<td>/ngfw/var/log/process_stdout.log</td>
+<td>STDOUT Output of FTD Processes</td>
+</tr>
+<tr>
+<td>/ngfw/var/log/ngfwManager.log</td>
+<td>ngfwManager Log</td>
+</tr>
+<tr>
+<td>/ngfw/var/log/messages</td>
+<td>General Log File</td>
+</tr>
+<tr>
+<td>/ngfw/var/log/action_queue.log</td>
+<td>Task Log (FMC Triggered Tasks)</td>
+</tr>
+<tr>
+<td>/ngfw/var/log/policy_deployment.log</td>
+<td>Policy Deployment Log</td>
+</tr>
+</tbody>
+</table>
+<h3 id="other-files">Other Files</h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/var/sf/sidns_download</td>
+<td>Security Intelligence - DNS</td>
+</tr>
+<tr>
+<td>/var/sf/sidns_download/*.lf</td>
+<td>DNS Feeds</td>
+</tr>
+<tr>
+<td>/var/sf/siurl_download</td>
+<td>Security Intelligence - URLs</td>
+</tr>
+<tr>
+<td>/var/sf/siurl_download/*.lf</td>
+<td>URL Feeds</td>
+</tr>
+<tr>
+<td>/var/sf/iprep_download</td>
+<td>Security Intelligence - IPs</td>
+</tr>
+<tr>
+<td>/var/sf/iprep_download/.*lf</td>
+<td>IP Reputation Feeds</td>
+</tr>
+<tr>
+<td>/var/sf/cloud_download</td>
+<td>Brightcloud URL Filtering</td>
+</tr>
+<tr>
+<td>/var/sf/cloud_download/cloudagent_dlupdate_health</td>
+<td>Brightcloud URL Filtering database status</td>
+</tr>
+<tr>
+<td>/var/sf/cloud_download/full_bcdb_rep.bin</td>
+<td>URL Database</td>
+</tr>
+<tr>
+<td>/dev/shm/Global.bcdb</td>
+<td>URL Database (in shared memory)</td>
+</tr>
+<tr>
+<td>/var/sf/clamupd_download/</td>
+<td>CLAMAV Database</td>
+</tr>
+<tr>
+<td>/var/sf/clamupd_download/*.cvd</td>
+<td>CLAMAV Database files</td>
+</tr>
+<tr>
+<td>/var/sf/remediation</td>
+<td>Remediation modules</td>
+</tr>
+<tr>
+<td>/var/sf/detection_engines</td>
+<td>Snort configuration</td>
+</tr>
+<tr>
+<td>/var/sf/updates</td>
+<td>Updates directory</td>
+</tr>
+<tr>
+<td>/var/sf/identity_integration</td>
+<td>User to IP mappings</td>
+</tr>
+<tr>
+<td>/var/common</td>
+<td>Dump Directory (backups, t-shoot files, etc.)</td>
+</tr>
+</tbody>
+</table></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2017-01-25</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dependencyhell.net/2017-01-25-firepower-files-and-processes/" data-title="Firepower Files and Processes" data-via="https://twitter.com/xkaisero" data-hashtags="troubleshooting"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dependencyhell.net/2017-01-25-firepower-files-and-processes/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/troubleshooting/">troubleshooting</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2017-01-24-troubleshooting-firepower-url-filtering/" class="prev" rel="prev" title="Troubleshooting Firepower URL Filtering"><i class="fas fa-angle-left fa-fw"></i>Troubleshooting Firepower URL Filtering</a>
+            <a href="/2017-01-26-firepower-process-management/" class="next" rel="next" title="Firepower Process Management">Firepower Process Management<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript">Disqus</a>.
+            </noscript></div></article></div>
+            </main></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="https://dependencyhell.disqus.com/embed.js" defer></script><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', 'UA-90912607-1', { 'anonymize_ip': true });
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-90912607-1" async></script></body>
+</html>

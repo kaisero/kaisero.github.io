@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>AnyConnect for FTD - Dependency Hell</title><meta name="Description" content=""><meta property="og:title" content="AnyConnect for FTD" />
+<meta property="og:description" content="AnyConnect has been a high priority roadmap item for Firepower Threat Defense and was planned to be released in version 6.2.1 with the new Firepower 2100 appliances in april. After some delays 6.2.1 was released on the 15th of May and firepower 2100 orders started shipping. So were are we standing at the moment? What platform support AnyConnect with FTD and what features are really working?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dependencyhell.net/2017-05-27-anyconnect-for-ftd/" />
+<meta property="article:published_time" content="2017-05-27T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-05-27T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AnyConnect for FTD"/>
+<meta name="twitter:description" content="AnyConnect has been a high priority roadmap item for Firepower Threat Defense and was planned to be released in version 6.2.1 with the new Firepower 2100 appliances in april. After some delays 6.2.1 was released on the 15th of May and firepower 2100 orders started shipping. So were are we standing at the moment? What platform support AnyConnect with FTD and what features are really working?"/>
+<meta name="application-name" content="Dependency Hell">
+<meta name="apple-mobile-web-app-title" content="Dependency Hell"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://dependencyhell.net/2017-05-27-anyconnect-for-ftd/" /><link rel="prev" href="https://dependencyhell.net/2017-05-06-ftd-software-quality/" /><link rel="next" href="https://dependencyhell.net/2017-07-09-dumping-firepower-acp/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "AnyConnect for FTD",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dependencyhell.net\/2017-05-27-anyconnect-for-ftd\/"
+        },"genre": "posts","keywords": "overview","wordcount":  539 ,
+        "url": "https:\/\/dependencyhell.net\/2017-05-27-anyconnect-for-ftd\/","datePublished": "2017-05-27T00:00:00+00:00","dateModified": "2017-05-27T00:00:00+00:00","author": {
+                "@type": "Person",
+                "name": "Oliver Kaiser"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Dependency Hell">Dependency Hell</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Dependency Hell"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Dependency Hell">Dependency Hell</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Dependency Hell">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">AnyConnect for FTD</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/anyconnect/"><i class="far fa-folder fa-fw"></i>anyconnect</a>&nbsp;<a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-05-27">2017-05-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;539 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#supported-platforms">Supported Platforms</a></li>
+    <li><a href="#licensing">Licensing</a></li>
+    <li><a href="#feature-set">Feature Set</a></li>
+    <li><a href="#limitations">Limitations</a></li>
+    <li><a href="#my-recommendation">My recommendation</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>AnyConnect has been a high priority roadmap item for Firepower Threat Defense and was planned to be released in version 6.2.1 with the new Firepower 2100 appliances in april. After some delays 6.2.1 was released on the 15th of May and firepower 2100 orders started shipping. So were are we standing at the moment? What platform support AnyConnect with FTD and what features are really working?</p>
+<h2 id="supported-platforms">Supported Platforms</h2>
+<p>6.2.1 should have brought AnyConnect to all hardware platform running FTD but due to unknown reasons 6.2.1 was only  released for the 2100 series of appliances and all other platforms like ASA 5500-X, FP4100 and FP9300 will need to wait until the next minor release. I think this decision was made due to stability / testing concerns, but since Cisco marketed the 2100 series with AnyConnect heavily they had to deliver something in time. I am actually happy that they did not release AnyConnect for all platforms and hope they will get AnyConnect production ready when it will be released for all platforms.</p>
+<h2 id="licensing">Licensing</h2>
+<p>Smart licensing is required for AnyConnect. In case you are going through a migration from classic ASA licensing you will have to contact licensing support to change your classic license to a smart license. The licensing model of AnyConnect 4 is exactly the same for FTD. It is still a trust based license, so there is no enforcement from a technical point.</p>
+<p>Keep in mind that AnyConnect will not work in evaluation mode since a strong crypto license is required. Also if you want to deploy remote access configuration you wont be able to  if the device is not  licensed.</p>
+<h2 id="feature-set">Feature Set</h2>
+<p>6.2.1 only brings a subset of AnyConnect functionality to FTD. We will see more features in upcoming releases but as of now the following features are supported:</p>
+<ul>
+<li>Configuration using FMC and FDM</li>
+<li>RAVPN configuration wizard</li>
+<li>Client based only (Clientless SSL/VPN is not part of the RAVPN and will be rewritten probably)</li>
+<li>IPSec and TLS transport</li>
+<li>AD, LDAP and RADIUS Authentication</li>
+<li>Client Certificate + AAA authorization</li>
+<li>Dynamic Access Lists and time ranges</li>
+<li>Group Policy (Split Tunneling, access hour, timeouts, etc.)</li>
+</ul>
+<p>The feature set is rather basic but will be enough to handle most of AnyConnect installations imo.</p>
+<h2 id="limitations">Limitations</h2>
+<p>There are some limitations as of now with the AnyConnect implementation for FTD. This list is by no means complete but should give you a good overview on what exactly is not working at the moment.</p>
+<ul>
+<li>VPN load-balancing cluster</li>
+<li>SAML SSO</li>
+<li>Double authentication</li>
+<li>Local authentication</li>
+<li>WSA integration (WSA secure mobility)</li>
+<li>SCEP proxy</li>
+<li>Per-app VPN for mobile</li>
+<li>Host Scan</li>
+<li>Dynamic Acces Policy</li>
+<li>ISE posture scan</li>
+<li>AnyConnect Profile editor (you will need to edit anyconnect profiles using the client app)</li>
+</ul>
+<h2 id="my-recommendation">My recommendation</h2>
+<p>Before starting a project that involves AnyConnect on FTD make sure all the features you require are currently supported and that you test the functionality in the lab before deploying into production. As of now I would not recommend any large scale AnyConnect deployments with FTD since the features was just released a few weeks ago so I am not sure if the software quality is were it should be&hellip; Atleast the public bugtracker for firepower is very quite about AnyConnect so that might be a good sign.</p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2017-05-27</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dependencyhell.net/2017-05-27-anyconnect-for-ftd/" data-title="AnyConnect for FTD" data-via="https://twitter.com/xkaisero" data-hashtags="overview"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dependencyhell.net/2017-05-27-anyconnect-for-ftd/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/overview/">overview</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2017-05-06-ftd-software-quality/" class="prev" rel="prev" title="FTD Software Quality"><i class="fas fa-angle-left fa-fw"></i>FTD Software Quality</a>
+            <a href="/2017-07-09-dumping-firepower-acp/" class="next" rel="next" title="Dumping Firepower AC-Policy">Dumping Firepower AC-Policy<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript">Disqus</a>.
+            </noscript></div></article></div>
+            </main></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="https://dependencyhell.disqus.com/embed.js" defer></script><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', 'UA-90912607-1', { 'anonymize_ip': true });
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-90912607-1" async></script></body>
+</html>

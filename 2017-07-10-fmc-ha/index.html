@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Firepower Management Center HA - Dependency Hell</title><meta name="Description" content=""><meta property="og:title" content="Firepower Management Center HA" />
+<meta property="og:description" content="Configuring HA for FMC is pretty straight forward but how exactly does it work and how can we troubleshoot HA if it is not working correctly? In this post I will show you what FMC HA is doing behind the scenes and tools we have available to take a deeper look into the system and uncover issues." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dependencyhell.net/2017-07-10-fmc-ha/" />
+<meta property="article:published_time" content="2017-07-10T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-07-10T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Firepower Management Center HA"/>
+<meta name="twitter:description" content="Configuring HA for FMC is pretty straight forward but how exactly does it work and how can we troubleshoot HA if it is not working correctly? In this post I will show you what FMC HA is doing behind the scenes and tools we have available to take a deeper look into the system and uncover issues."/>
+<meta name="application-name" content="Dependency Hell">
+<meta name="apple-mobile-web-app-title" content="Dependency Hell"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://dependencyhell.net/2017-07-10-fmc-ha/" /><link rel="prev" href="https://dependencyhell.net/2017-07-09-dumping-firepower-acp/" /><link rel="next" href="https://dependencyhell.net/2017-08-04-troubleshooting-firepower-upgrade/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Firepower Management Center HA",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dependencyhell.net\/2017-07-10-fmc-ha\/"
+        },"genre": "posts","keywords": "architecture, configuration","wordcount":  1311 ,
+        "url": "https:\/\/dependencyhell.net\/2017-07-10-fmc-ha\/","datePublished": "2017-07-10T00:00:00+00:00","dateModified": "2017-07-10T00:00:00+00:00","author": {
+                "@type": "Person",
+                "name": "Oliver Kaiser"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Dependency Hell">Dependency Hell</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Dependency Hell"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Dependency Hell">Dependency Hell</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Dependency Hell">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Firepower Management Center HA</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-07-10">2017-07-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1311 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#fmc-high-availability">FMC High Availability</a>
+      <ul>
+        <li><a href="#configuration">Configuration</a></li>
+        <li><a href="#upgrade-procedure">Upgrade Procedure</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a>
+          <ul>
+            <li><a href="#device-not-registered-to-secondary-fmc-after-ha-configuration">Device not registered to secondary FMC after HA configuration</a></li>
+            <li><a href="#synchronization-stopped-during-fmc-backup">Synchronization stopped during FMC backup</a></li>
+            <li><a href="#log-files">Log Files</a></li>
+            <li><a href="#cli-tools">CLI Tools</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>Configuring HA for FMC is pretty straight forward but how exactly does it work and how can we troubleshoot HA if it is not working correctly? In this post I will show you what FMC HA is doing behind the scenes and tools we have available to take a deeper look into the system and uncover issues.</p>
+<h2 id="fmc-high-availability">FMC High Availability</h2>
+<p>High Availability is available on physical Firepower Management Center appliances. It lets you create an active/standby HA solution which does not require layer 2 adjacency (making it possible to have real HA over multiple sites without extending layer 2 across sites).</p>
+<p>FMC HA will create a second &ldquo;manager&rdquo; registration on your sensor resulting in two sftunnel connections. One to your primary FMC and one to your secondary FMC.</p>
+<p>It is a cold-standby solution which forces you to promote the passive FMC to active in case of failure of the primary device, but dont worry&hellip; all your events will be logged to both FMCs so in case of device failure you should not lose any events sent from the sensor to FMC. Just promote the passive FMC and it will start up all the necessary processes and become the active unit.</p>
+<p>Behind the scenes the HA procedure consists of a sybase database mirror and a transaction framework that will make sure data is being replicated from the active to the passive management center.</p>
+<p>![fmc-ha-status]({{ site.url }}/images/posts/2017-07-10-FMC-HA/fmc-ha-design.png)</p>
+<h3 id="configuration">Configuration</h3>
+<p>Before configuring FMC HA make sure that&hellip;</p>
+<ul>
+<li>Hardware is identical (you cant build HA between different hardware appliances)</li>
+<li>Software release is identical</li>
+<li>There are no sensors registered to the secondary FMC. If so, remove registration</li>
+<li>You have a working backup (I havent seen a case where HA initialization caused any issues that would require re-imaging&hellip; but you never know :)</li>
+</ul>
+<p>To configure HA login to FMC UI, go to <code>Integration &gt; High Availability</code>  and define a secondary peer. Then you grab some coffee&hellip; because it will take some time and you will see some warnings that will make you think it didnt work, but just be patient.</p>
+<p>After some minutes the status of HA Synchcronization should change to &ldquo;OK&rdquo; like this:</p>
+<p>![fmc-ha-status]({{ site.url }}/images/posts/2017-07-10-FMC-HA/fmc-ha-status.png)</p>
+<p>At this point your sensors should be registered with your passive FMC and should be listed when you navigate to the devices page on the passive FMC.</p>
+<h3 id="upgrade-procedure">Upgrade Procedure</h3>
+<p>To upgrade an FMC in HA you will have to follow the following instructions:</p>
+<ul>
+<li>Manually stop HA synchronization</li>
+<li>Upgrade the passive FMC</li>
+<li>Wait for the upgrade to finish (HA state may change to degraded, which is normal)</li>
+<li>Upgrade the  active FMC</li>
+<li>Grab a coffee and give it some time to boot up after the upgrade procedure</li>
+<li>Promote the primary FMC to become active</li>
+<li>Deploy configuration to your sensors to verify everything is working as expected</li>
+</ul>
+<p>Make sure to always check the current release notes for additional information!</p>
+<h3 id="troubleshooting">Troubleshooting</h3>
+<h4 id="device-not-registered-to-secondary-fmc-after-ha-configuration">Device not registered to secondary FMC after HA configuration</h4>
+<p>In case the device registration failed you will have to remove the sensor from your active FMC and login into your sensor. You will need to use the <code>configure manager delete</code> command followed by the <code>configure manager add</code> command to add your sensor to FMC again. At this point I would advice you to open up <code>pigtail</code> on both your sensor and FMC and re-add the sensor on the active FMC.</p>
+<p>Using pigtail you will log all necessary output to find any issues in case the registration fails again.</p>
+<h4 id="synchronization-stopped-during-fmc-backup">Synchronization stopped during FMC backup</h4>
+<p>This behavior is by design and is not an issue. If a backup of FMC is being performed the HA synchronization will be stopped. During this timeframe you can continue configuration on your active FMC.</p>
+<h4 id="log-files">Log Files</h4>
+<p>Events related to FMC HA are being logged to <code>/var/log/syncd.log</code>. In case you have any issues that cant be solved via the UI make sure to check this logfile for further details.</p>
+<h4 id="cli-tools">CLI Tools</h4>
+<p>FMC ships with two perl scripts that can be used to query for high availability information. I would recommend not using these tools to change any configuration parameters but only to verify the current state of FMC HA. In the past I have used<code>manage_HADC.pl</code> to switch roles, break HA etc. and did not have any issues but keep in mind that I was working on a non production environment.</p>
+<p>manage_HADC.pl</p>
+<p>manage_HADC.pl provides a cli interface to query the current HA state and do some management tasks that are also exposed using the UI (atleast to some degree)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">****************  Configuration Utility  **************
+
+ 1   Show HA Status
+ 2   Register as Secondary HA FMC
+ 3   Register as Primary HA FMC
+ 4   Switch HA roles
+ 5   Pause Mirror
+ 6   Re-establish Mirror
+ 7   Set as Active for Full UI
+ 8   Force as Active to resolve split brain
+ 9   Break HA - keep devices
+ 10  Break HA - delete devices
+ 0   Exit
+
+**************************************************************
+
+</code></pre></td></tr></table>
+</div>
+</div><p>Option 1 is probably the only option you want to select. It will display the current state of HA with some additional details</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">SYNC_ACTIVE: 1 at /usr/local/sf/lib/perl/5.10.1/SF/Synchronize.pm line 456, &lt;STDIN&gt; line 1.
+Found running Synchronization task: Initializing at /usr/local/sf/lib/perl/5.10.1/SF/Transaction/HADC.pm line 232.
+Sybase state :  at /usr/local/sf/lib/perl/5.10.1/SF/Synchronize.pm line 654.
+Check peer ftd01.example.com... at /usr/local/sf/lib/perl/5.10.1/SF/PeerManager/Peers.pm line 51.
+Check peer ftd02.example.com... at /usr/local/sf/lib/perl/5.10.1/SF/PeerManager/Peers.pm line 51.
+Check peer fmc-secondary... at /usr/local/sf/lib/perl/5.10.1/SF/PeerManager/Peers.pm line 51.
+Sybase state :  at /usr/local/sf/lib/perl/5.10.1/SF/Synchronize.pm line 747.
+Sync status :Synchronization Task In-progress  at /usr/local/sf/lib/perl/5.10.1/SF/Synchronize.pm line 748.
+Found running Synchronization task: Initializing at /usr/local/sf/lib/perl/5.10.1/SF/Transaction/HADC.pm line 232.
+STATUS:
+Active HA DC: 1 
+HA_SYNC: SYNCHRONIZATION_HADC 
+LastFailover: Success, Mon Jun 12 19:54:23 2017 
+Sybase_State: 1 
+blocking: 0 
+connected: 1 
+degraded: 0 
+degraded_message: ARRAY(0xabd5e78) 
+mirroring: 1 
+peer_connected: 1 
+status: ARRAY(0xacdb880) 
+</code></pre></td></tr></table>
+</div>
+</div><p>troubleshoot_HADC.pl</p>
+<p>As the name of the script indicates you can use troubleshoot_HADC.pl to verify some additional information not available using manage_HADC.pl</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">****************  Troubleshooting Utility  **************
+ 1   Show HA Info Of FMC
+ 2   Execute Sybase DBPing
+ 3   Show Arbiter Status
+ 4   Check Peer Connectivity
+ 5   Print Messages of AQ Task
+ 0   Exit
+**************************************************************
+</code></pre></td></tr></table>
+</div>
+</div><p>Option 1 will display the current status of the sybase database replication</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Enter choice: 1
+
+HA Enabled: Yes
+
+This FMC Role In HA: Active - Primary
+Sybase Process: Running (vmsDbEngine, theSybase PM Process is Running)
+Sybase Database Connectivity: Accepting DB Connections.
+Sybase Database Name: csm_primary
+Sybase Role: Active
+</code></pre></td></tr></table>
+</div>
+</div><p>Option 2 will connect to the local sybase database to verify that connectivity is working</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Enter choice: 2
+Sybase Database Name: csm_primary
+$VAR1 = [
+          &#39;Mirror Server =&gt; csm_primary&#39;,
+          {
+            &#39;stderr&#39; =&gt; undef,
+            &#39;stdout&#39; =&gt; &#39;SQL Anywhere Server Ping Utility Version 16.0.0.2271
+Type       Property                  Value
+---------  ----------------          ------------------------------
+Database   MirrorRole                primary
+Database   MirrorState               synchronizing
+Database   PartnerState              connected
+Database   ArbiterState              connected
+Server     ServerName                csm_primary
+Ping database successful.
+&#39;,
+            &#39;rcode&#39; =&gt; 0
+          }
+        ];
+</code></pre></td></tr></table>
+</div>
+</div><p>Option 4 will display the status of the peer (other FMC). Use this option to verify software version, ip address, etc. are correctly set</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Enter choice: 4
+Peer UUID [Enter &#39;Return&#39; For HA Peer(no UUID required)]:
+
+Peer Is Connected
+
+$VAR1 = {
+          &#39;vip_local&#39; =&gt; &#39;&#39;,
+          &#39;priority&#39; =&gt; &#39;0&#39;,
+          &#39;ip&#39; =&gt; &#39;10.1.1.2&#39;,
+          &#39;model_id&#39; =&gt; &#39;F&#39;,
+          &#39;uuid&#39; =&gt; &#39;f1fa29d2-7b4f-11e6-b5a3-ca59e03bf0e4&#39;,
+          &#39;sw_version&#39; =&gt; &#39;6.2.0.2&#39;,
+          &#39;upgrade_version&#39; =&gt; &#39;&#39;,
+          &#39;persistent&#39; =&gt; &#39;0&#39;,
+          &#39;mgmt_mac_address&#39; =&gt; &#39;00:62:EC:42:EE:F2&#39;,
+          &#39;vnet&#39; =&gt; undef,
+          &#39;primary_mgr&#39; =&gt; &#39;0&#39;,
+          &#39;vip&#39; =&gt; &#39;&#39;,
+          &#39;model_number&#39; =&gt; &#39;66&#39;,
+          &#39;ipv6&#39; =&gt; undef,
+          &#39;reg_state&#39; =&gt; &#39;0&#39;,
+          &#39;name&#39; =&gt; &#39;fmc-secondary&#39;,
+          &#39;active&#39; =&gt; &#39;1&#39;,
+          &#39;uuid_gw&#39; =&gt; &#39;&#39;,
+          &#39;reg_key&#39; =&gt; &#39;&#39;,
+          &#39;last_changed&#39; =&gt; &#39;1491849682&#39;,
+          &#39;role&#39; =&gt; &#39;0&#39;
+        };
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2017-07-10</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dependencyhell.net/2017-07-10-fmc-ha/" data-title="Firepower Management Center HA" data-via="https://twitter.com/xkaisero" data-hashtags="architecture,configuration"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dependencyhell.net/2017-07-10-fmc-ha/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/architecture/">architecture</a>,&nbsp;<a href="/tags/configuration/">configuration</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2017-07-09-dumping-firepower-acp/" class="prev" rel="prev" title="Dumping Firepower AC-Policy"><i class="fas fa-angle-left fa-fw"></i>Dumping Firepower AC-Policy</a>
+            <a href="/2017-08-04-troubleshooting-firepower-upgrade/" class="next" rel="next" title="Troubleshooting Firepower Upgrade">Troubleshooting Firepower Upgrade<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript">Disqus</a>.
+            </noscript></div></article></div>
+            </main></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="https://dependencyhell.disqus.com/embed.js" defer></script><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', 'UA-90912607-1', { 'anonymize_ip': true });
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-90912607-1" async></script></body>
+</html>

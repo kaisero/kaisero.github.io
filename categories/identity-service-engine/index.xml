@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>identity-service-engine - Category - Dependency Hell</title>
+        <link>https://dependencyhell.net/categories/identity-service-engine/</link>
+        <description>identity-service-engine - Category - Dependency Hell</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Tue, 19 May 2020 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/categories/identity-service-engine/" rel="self" type="application/rss+xml" /><item>
+    <title>Patching Identity Service Engine (Standalone)</title>
+    <link>https://dependencyhell.net/2020-05-19-ise-standalone-patch/</link>
+    <pubDate>Tue, 19 May 2020 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2020-05-19-ise-standalone-patch/</guid>
+    <description><![CDATA[Patching Identity Service Engine (Standalone) Although it is easier to update ISE through the graphical user interface in this post we will use the CLI to install the newest patch to ISE 2.4. An advantage of utilizing the CLI is that we can control the order in which to install the patch to different nodes which is being taken care of automatically if the GUI is used to update ISE.]]></description>
+</item></channel>
+</rss>

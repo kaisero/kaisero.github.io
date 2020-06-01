@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Automating ACP Changes - Dependency Hell</title><meta name="Description" content=""><meta property="og:title" content="Automating ACP Changes" />
+<meta property="og:description" content="In the last few months I have found many people on the cisco support forums asking for a way to do bulk changes to their access control policy in FMC. Since the UI does not provide this functionality we can make use of the REST API of FMC to accomplish this task" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dependencyhell.net/2017-08-27-automating-acp-bulk-changes/" />
+<meta property="article:published_time" content="2017-08-27T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-08-27T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Automating ACP Changes"/>
+<meta name="twitter:description" content="In the last few months I have found many people on the cisco support forums asking for a way to do bulk changes to their access control policy in FMC. Since the UI does not provide this functionality we can make use of the REST API of FMC to accomplish this task"/>
+<meta name="application-name" content="Dependency Hell">
+<meta name="apple-mobile-web-app-title" content="Dependency Hell"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://dependencyhell.net/2017-08-27-automating-acp-bulk-changes/" /><link rel="prev" href="https://dependencyhell.net/2017-08-27-automating-fxos-provisioning/" /><link rel="next" href="https://dependencyhell.net/2018-04-08-ftd-unsupported-features/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Automating ACP Changes",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dependencyhell.net\/2017-08-27-automating-acp-bulk-changes\/"
+        },"genre": "posts","keywords": "automation, python","wordcount":  731 ,
+        "url": "https:\/\/dependencyhell.net\/2017-08-27-automating-acp-bulk-changes\/","datePublished": "2017-08-27T00:00:00+00:00","dateModified": "2017-08-27T00:00:00+00:00","author": {
+                "@type": "Person",
+                "name": "Oliver Kaiser"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Dependency Hell">Dependency Hell</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Dependency Hell"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Dependency Hell">Dependency Hell</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Dependency Hell">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Automating ACP Changes</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-08-27">2017-08-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;731 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#updating-log-settings">Updating Log Settings</a>
+      <ul>
+        <li><a href="#step-01-clone-git-repository-create-a-new-python-file-and-install-required-dependencies">Step 01: Clone git repository, create a new python file and install required dependencies</a></li>
+        <li><a href="#step-02-add-content-to-examplepy">Step 02: Add content to example.py</a></li>
+        <li><a href="#step-03-execute">Step 03: Execute</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>In the last few months I have found many people on the cisco support forums asking for a way to do bulk changes to their access control policy in FMC. Since the UI does not provide this functionality we can make use of the REST API of FMC to accomplish this task</p>
+<h2 id="requirements">Requirements</h2>
+<p>I mostly use python for automation task. I have created a small wrapper for the FMC API which is available at <a href="https://github.com/kaisero/fireREST" target="_blank" rel="noopener noreffer">github</a>. In this post we will use the fireREST utility to interface with the FMC REST API. Make sure you install all dependencies listed in requirements.txt.</p>
+<p>In the following example I have used FMC version 6.2.0.2 and Python 3.6. In case you encounter any API errors make sure your FMC is atleast version 6.2.0 since there have been a few bugs in the API in version 6.0.x / 6.1.x&hellip;</p>
+<h2 id="updating-log-settings">Updating Log Settings</h2>
+<p>One of the things many people ask for is logging configuration for all rules. It is a very typical scenario&hellip; A syslog server is being installed and the firewall system should log all rule matches to the new system. Now imagine you have 500 rules and want to accomplish this task using the UI. That&rsquo;s why we will use a small and simple python script to accomplish this task.</p>
+<h3 id="step-01-clone-git-repository-create-a-new-python-file-and-install-required-dependencies">Step 01: Clone git repository, create a new python file and install required dependencies</h3>
+<p>Clone git repository to a directory of your choice</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">git clone https://github.com/kaisero/fireREST.git
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Cloning into &#39;fireREST&#39;...
+remote: Counting objects: 19, done.
+Receiving objects:  47% (9/19)
+Receiving objects: 100% (19/19), 20.18 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (5/5), done.
+Checking connectivity... done.
+</code></pre></td></tr></table>
+</div>
+</div><p>Change to fireREST directory, create file <code>example.py</code> and use your favorite editor to open example.py</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cd fireREST
+touch example.py
+vim example.py
+</code></pre></td></tr></table>
+</div>
+</div><p>Install dependencies using pip</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">pip install -r requirements.txt
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="step-02-add-content-to-examplepy">Step 02: Add content to example.py</h3>
+<p>Add the following content to your example.py and edit the variables at the top to match your environment</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># import required dependencies
+from __future__ import print_function
+from fireREST import FireREST
+
+# set variables for execution. Make sure your credentials are correct, ACP exists and syslog alert definition exists
+loglevel = &#39;DEBUG&#39;
+device = &#39;fmc.example.com&#39;
+username = &#39;admin&#39;
+password = &#39;Cisco123&#39;
+domain = &#39;Global&#39;
+policy = &#39;lab-policy&#39;
+syslog_alert = &#39;syslog-server&#39;
+
+# Initialize a new api object
+api = FireREST(device=device, username=username, password=password, loglevel=loglevel)
+
+# Get IDs for specified acp and syslog alert. API PK = UUID, so we have to find the matching api object for the name
+# specified.
+
+acp_id = api.get_acp_id_by_name(policy)
+syslog_alert_id = api.get_syslogalert_id_by_name(syslog_alert)
+
+# Get all access control rules for the access control policy specified
+acp_rules = api.get_acp_rules(acp_id, expanded=True, domain=domain)
+
+# Loop through HTTP response objects
+for response in acp_rules:
+    # Loop through access control rules in http response object
+    for acp_rule in response.json()[&#39;items&#39;]:
+        # Only change syslog settings if no syslog alert configuration exists
+        if &#39;syslogConfig&#39; not in acp_rule:
+            # Get the existing rule configuration
+            payload = acp_rule
+            # Set syslog configuration
+            payload[&#39;syslogConfig&#39;] = {
+                    &#39;id&#39;: syslog_alert_id
+            }
+            # Remove metadata fields from existing rule. This is required since the API does not support
+            # PATCH operations as of version 6.2.1 of FMC. Thats why we have to delete metadata before we use a PUT operation to change our ACP rule
+            del payload[&#39;metadata&#39;]
+            del payload[&#39;links&#39;]
+            print(&#39;Trying set syslog server for rule {0} in policy {1}...&#39;.format(acp_rule[&#39;name&#39;], policy))
+            # Send json payload to FMC REST API
+            result = api.update_acp_rule(policy_id=acp_id, rule_id=acp_rule[&#39;id&#39;], data=payload, domain=domain)
+            # Verify that the PUT operation has been successful
+            if result.status_code == 200:
+                print(&#39;[SUCCESS]&#39;)
+            else:
+                print(&#39;[ERROR] Could not update syslog settings.&#39;)
+        else:
+            print(&#39;Syslog configuration for rule {0} in policy {1} already exists. Skipping.&#39;.format(acp_rule[&#39;name&#39;], policy))
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="step-03-execute">Step 03: Execute</h3>
+<p>When executing the script you should see the status for each rule update on your shell. In case you encounter any errors try to follow the stack trace to the line where the execution fails.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">python example.py
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Trying set syslog server for rule permit-dns in policy lab-policy...
+[SUCCESS]
+Trying set syslog server for rule permit-ntp in policy lab-policy...
+[SUCCESS]
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2017-08-27</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dependencyhell.net/2017-08-27-automating-acp-bulk-changes/" data-title="Automating ACP Changes" data-via="https://twitter.com/xkaisero" data-hashtags="automation,python"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dependencyhell.net/2017-08-27-automating-acp-bulk-changes/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/automation/">automation</a>,&nbsp;<a href="/tags/python/">python</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2017-08-27-automating-fxos-provisioning/" class="prev" rel="prev" title="Automating FX-OS Provisioning"><i class="fas fa-angle-left fa-fw"></i>Automating FX-OS Provisioning</a>
+            <a href="/2018-04-08-ftd-unsupported-features/" class="next" rel="next" title="FTD Feature Limitations">FTD Feature Limitations<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript">Disqus</a>.
+            </noscript></div></article></div>
+            </main></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="https://dependencyhell.disqus.com/embed.js" defer></script><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', 'UA-90912607-1', { 'anonymize_ip': true });
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-90912607-1" async></script></body>
+</html>

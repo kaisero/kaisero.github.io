@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+	<meta name="generator" content="Hugo 0.72.0" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Dependency Hell</title><meta name="Description" content=""><meta property="og:title" content="Dependency Hell" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://dependencyhell.net/" />
+<meta property="og:updated_time" content="2020-05-19T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Dependency Hell"/>
+<meta name="twitter:description" content=""/>
+<meta name="application-name" content="Dependency Hell">
+<meta name="apple-mobile-web-app-title" content="Dependency Hell"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://dependencyhell.net/" /><link rel="alternate" href="/index.xml" type="application/rss+xml" title="Dependency Hell">
+    <link rel="feed" href="/index.xml" type="application/rss+xml" title="Dependency Hell"><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "url": "https:\/\/dependencyhell.net\/","inLanguage": "en","author": {
+                "@type": "Person",
+                "name": "Oliver Kaiser"
+            },"name": "Dependency Hell"
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Dependency Hell">Dependency Hell</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Dependency Hell"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Dependency Hell">Dependency Hell</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Dependency Hell">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="page home" posts><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/2020-05-19-ise-standalone-patch/">Patching Identity Service Engine (Standalone)</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-publish">published on <time datetime="2020-05-19">2020-05-19</time></span>&nbsp;<span class="post-category">included in <a href="/categories/identity-service-engine/"><i class="far fa-folder fa-fw"></i>identity-service-engine</a></span></div><div class="content">Patching Identity Service Engine (Standalone) Although it is easier to update ISE through the graphical user interface in this post we will use the CLI to install the newest patch to ISE 2.4. An advantage of utilizing the CLI is that we can control the order in which to install the patch to different nodes which is being taken care of automatically if the GUI is used to update ISE.</div><div class="post-footer">
+        <a href="/2020-05-19-ise-standalone-patch/">Read More</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/upgrade/">upgrade</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/2018-04-08-ftd-unsupported-features/">FTD Feature Limitations</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-publish">published on <time datetime="2018-04-06">2018-04-06</time></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div><div class="content"><p>Since I see this topic coming up every now and then I thought it would be a good idea to create an overview of unsupported features for FTD in comparison to ASA.</p></div><div class="post-footer">
+        <a href="/2018-04-08-ftd-unsupported-features/">Read More</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/overview/">overview</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/2017-08-27-automating-acp-bulk-changes/">Automating ACP Changes</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-publish">published on <time datetime="2017-08-27">2017-08-27</time></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div><div class="content"><p>In the last few months I have found many people on the cisco support forums asking for a way to do bulk changes to their access control policy in FMC. Since the UI does not provide this functionality we can make use of the REST API of FMC to accomplish this task</p></div><div class="post-footer">
+        <a href="/2017-08-27-automating-acp-bulk-changes/">Read More</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/automation/">automation</a>,&nbsp;<a href="/tags/python/">python</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/2017-08-27-automating-fxos-provisioning/">Automating FX-OS Provisioning</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-publish">published on <time datetime="2017-08-27">2017-08-27</time></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div><div class="content"><p>In the last year I have installed a few FP 4100 and FP 9300 appliances which thought me one thing&hellip; Provisioning by hand takes too much time and should be automated to avoid inconsistent configuration and wasted hours waiting for upgrades to complete. Since a nearly feature complete REST API is available for FX-OS I started developing a small library to interface with the API and found the results to be very satisfying.</p></div><div class="post-footer">
+        <a href="/2017-08-27-automating-fxos-provisioning/">Read More</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/fxos/">fxos</a>,&nbsp;<a href="/tags/automation/">automation</a>,&nbsp;<a href="/tags/python/">python</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/2017-08-27-large-fmc-backup/">FMC Bug - Large Backup Files</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-publish">published on <time datetime="2017-08-27">2017-08-27</time></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div><div class="content"><p>I encountered an interesting bug in 6.2.0.2 which I would like to share with the community in case anybody else is having the same issue. On one of my FMC installations I found that the backups were rapidly growing from 2.5G to 9.5G in size. After some research and help from Cisco TAC we were able to pinpoint the issue and implement a workaround.</p></div><div class="post-footer">
+        <a href="/2017-08-27-large-fmc-backup/">Read More</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/bug/">bug</a>,&nbsp;<a href="/tags/cscvf54853/">cscvf54853</a>,&nbsp;<a href="/tags/6.2.0.2/">6.2.0.2</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/2017-08-05-ftd-vs-ftp/">FTD Bug - FTP transfer failing</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-publish">published on <time datetime="2017-08-04">2017-08-04</time></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div><div class="content"><p>After encountering a few bugs with how FTD handles FTP traffic I thought I woud do a little write up for engineers scratching their heads why FTP data traffic would not pass through cisco firewalls running FTD.</p></div><div class="post-footer">
+        <a href="/2017-08-05-ftd-vs-ftp/">Read More</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/bug/">bug</a>,&nbsp;<a href="/tags/6.2.0/">6.2.0</a>,&nbsp;<a href="/tags/cscve45948/">cscve45948</a>,&nbsp;<a href="/tags/cscve09249/">cscve09249</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/2017-08-04-troubleshooting-firepower-upgrade/">Troubleshooting Firepower Upgrade</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-publish">published on <time datetime="2017-08-04">2017-08-04</time></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div><div class="content"><p>At some point we have all come across update issues with error messages like &ldquo;Update install failed.&rdquo;, without any further details available. In my opinion there should be more details on an UI to further troubleshoot issues like that, but when it comes to upgrade procedures on FMC that is about it.</p>
+<p>So how exactly should we start analyzing upgrade issues on FMC? Although the UI output is rather generic there is lots of information to be found using the CLI. Each upgrade procedure consists of a variaty of scripts that are being executed on the device that is being upgraded.</p></div><div class="post-footer">
+        <a href="/2017-08-04-troubleshooting-firepower-upgrade/">Read More</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/upgrade/">upgrade</a>,&nbsp;<a href="/tags/troubleshooting/">troubleshooting</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/2017-07-10-fmc-ha/">Firepower Management Center HA</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-publish">published on <time datetime="2017-07-10">2017-07-10</time></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div><div class="content"><p>Configuring HA for FMC is pretty straight forward but how exactly does it work and how can we troubleshoot HA if it is not working correctly? In this post I will show you what FMC HA is doing behind the scenes and tools we have available to take a deeper look into the system and uncover issues.</p></div><div class="post-footer">
+        <a href="/2017-07-10-fmc-ha/">Read More</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/architecture/">architecture</a>,&nbsp;<a href="/tags/configuration/">configuration</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/2017-07-09-dumping-firepower-acp/">Dumping Firepower AC-Policy</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-publish">published on <time datetime="2017-07-09">2017-07-09</time></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div><div class="content"><p>Have you ever been in a situation where you wanted to verify the actual access control policy deployed to your sensor?
+When I first started looking around on how to do this from a firepower sensor cli I found the following command  <code>show access-control-config</code> which displays a human readable version of the full access control policy. After some updates that misbehaved I was looking for an easy method to dump my policy before starting an upgrade so I can do a <code>diff</code> between my policy before the upgrade and after the upgrade.</p></div><div class="post-footer">
+        <a href="/2017-07-09-dumping-firepower-acp/">Read More</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/automation/">automation</a>,&nbsp;<a href="/tags/troubleshooting/">troubleshooting</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/2017-05-27-anyconnect-for-ftd/">AnyConnect for FTD</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-publish">published on <time datetime="2017-05-27">2017-05-27</time></span>&nbsp;<span class="post-category">included in <a href="/categories/anyconnect/"><i class="far fa-folder fa-fw"></i>anyconnect</a>&nbsp;<a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div><div class="content"><p>AnyConnect has been a high priority roadmap item for Firepower Threat Defense and was planned to be released in version 6.2.1 with the new Firepower 2100 appliances in april. After some delays 6.2.1 was released on the 15th of May and firepower 2100 orders started shipping. So were are we standing at the moment? What platform support AnyConnect with FTD and what features are really working?</p></div><div class="post-footer">
+        <a href="/2017-05-27-anyconnect-for-ftd/">Read More</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/overview/">overview</a></div></div>
+</article><ul class="pagination"><li class="page-item active">
+                    <span class="page-link">
+                        <a href="/">1</a>
+                    </span>
+                </li><li class="page-item ">
+                    <span class="page-link">
+                        <a href="/page/2/">2</a>
+                    </span>
+                </li></ul></div></div>
+            </main></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', 'UA-90912607-1', { 'anonymize_ip': true });
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-90912607-1" async></script></body>
+</html>

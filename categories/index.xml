@@ -1,0 +1,29 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Categories - Category - Dependency Hell</title>
+        <link>https://dependencyhell.net/categories/</link>
+        <description>Categories - Category - Dependency Hell</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Tue, 19 May 2020 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/categories/" rel="self" type="application/rss+xml" /><item>
+    <title>identity-service-engine</title>
+    <link>https://dependencyhell.net/categories/identity-service-engine/</link>
+    <pubDate>Tue, 19 May 2020 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/categories/identity-service-engine/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>firepower</title>
+    <link>https://dependencyhell.net/categories/firepower/</link>
+    <pubDate>Fri, 06 Apr 2018 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/categories/firepower/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>anyconnect</title>
+    <link>https://dependencyhell.net/categories/anyconnect/</link>
+    <pubDate>Sat, 27 May 2017 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/categories/anyconnect/</guid>
+    <description><![CDATA[]]></description>
+</item></channel>
+</rss>

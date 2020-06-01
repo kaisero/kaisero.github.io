@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Firepower Process Management - Dependency Hell</title><meta name="Description" content=""><meta property="og:title" content="Firepower Process Management" />
+<meta property="og:description" content="Have you ever been in a situation where you wanted to troubleshoot a certain firepower process? Tried to kill a process, to re-start it with some debug flags but it was already re-started automatically by process manager? Well pmtool is here to help. Using pmtool you can disable services, restart processes and check dependencies between components on firepower systems." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dependencyhell.net/2017-01-26-firepower-process-management/" />
+<meta property="article:published_time" content="2017-01-26T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-01-26T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Firepower Process Management"/>
+<meta name="twitter:description" content="Have you ever been in a situation where you wanted to troubleshoot a certain firepower process? Tried to kill a process, to re-start it with some debug flags but it was already re-started automatically by process manager? Well pmtool is here to help. Using pmtool you can disable services, restart processes and check dependencies between components on firepower systems."/>
+<meta name="application-name" content="Dependency Hell">
+<meta name="apple-mobile-web-app-title" content="Dependency Hell"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://dependencyhell.net/2017-01-26-firepower-process-management/" /><link rel="prev" href="https://dependencyhell.net/2017-01-25-firepower-files-and-processes/" /><link rel="next" href="https://dependencyhell.net/2017-01-27-firepower-6.2-release/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Firepower Process Management",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dependencyhell.net\/2017-01-26-firepower-process-management\/"
+        },"genre": "posts","keywords": "firepower, troubleshooting","wordcount":  646 ,
+        "url": "https:\/\/dependencyhell.net\/2017-01-26-firepower-process-management\/","datePublished": "2017-01-26T00:00:00+00:00","dateModified": "2017-01-26T00:00:00+00:00","author": {
+                "@type": "Person",
+                "name": "Oliver Kaiser"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Dependency Hell">Dependency Hell</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Dependency Hell"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Dependency Hell">Dependency Hell</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Dependency Hell">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Firepower Process Management</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-01-26">2017-01-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;646 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#disclaimer">Disclaimer</a></li>
+    <li><a href="#pmtool">pmtool</a>
+      <ul>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#process-status">Process Status</a></li>
+        <li><a href="#disableenable--processes">Disable/Enable  Processes</a></li>
+        <li><a href="#restart-process">Restart Process</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>Have you ever been in a situation where you wanted to troubleshoot a certain firepower process? Tried to kill a process, to re-start it with some debug flags but it was already re-started automatically by process manager? Well pmtool is here to help. Using pmtool you can disable services, restart processes and check dependencies between components on firepower systems.</p>
+<h2 id="disclaimer">Disclaimer</h2>
+<p>As always you should be aware of what you are doing. With great power comes great responsibility, so do not disable processes and then complain that a feature is not working anymore. Before using this utility on production systems, make sure you understand possible ceveats that could result from disabling and restarting processes on the firepower system.</p>
+<h2 id="pmtool">pmtool</h2>
+<h3 id="introduction">Introduction</h3>
+<p>pmtool is a binary to manage processes on firepower systems. It can be used from an FMC root shell and directly in the sfcli on firepower sensors like FTD, ASA with Firepower Services or the dedicated NGIPS.</p>
+<p>Make sure to run pmtool as root.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">admin@fmc:~$ sudo su -
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="process-status">Process Status</h3>
+<p>If you want to check the status of processes you can use the <code>Status</code> option for <code>pmtool</code>. Because the command will list the status for all managed daemons and tasks I have shortened the output and uploaded the full output <a href="%7b%7bsite.url%7d%7d/output/posts/2017-01-26-Firepower-Process-Management/pmtool-status.txt" rel="">here</a>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">root@fmc:~$ pmtool status
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Received status (0): 
+
+Global Environment:
+PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin
+
+Daemons:
+SFDataCorrelator (normal) - Running 6703
+Command: /usr/local/sf/bin/SFDataCorrelator --nodaemon
+PID File: /var/sf/run/SFDataCorrelator.pid
+Enable File: /etc/sf/SFDataCorrelator.run
+CPU Affinity: 
+Priority: 0
+Stop Timeout: 300
+Next start: Thu Jan 26 12:18:16 2017
+Requires: mysqld
+CGroups: memory=System(enrolled)
+
+(...)
+</code></pre></td></tr></table>
+</div>
+</div><p>In case you only want to check a specific process you may grep for the name. In the following example we will check the status of the identity daemon named adi.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">root@fmc:~# pmtool status | grep adi
+adi (normal) - Running 6209
+Command: /usr/local/sf/bin/adi
+PID File: /var/sf/run/adi.pid
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="disableenable--processes">Disable/Enable  Processes</h3>
+<p>In case you want to disable a process for troubleshooting reasons (e.g. start daemon manually and redirect debug output to a logfile) you can use the <code>DisableById</code> option for <code>pmtool</code>. Keep in mind that you will have to enable the process again afterwards or it wont be under ProcessManagers control again.</p>
+<p>Before disabling a process, make sure it is actually running. If it is not running there must be some issue.</p>
+<p>Check status of identity process</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">root@fmc:~# pmtool status | grep adi
+adi (normal) - Running 6209
+Command: /usr/local/sf/bin/adi
+PID File: /var/sf/run/adi.pid
+</code></pre></td></tr></table>
+</div>
+</div><p>Disable identity process</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">root@fmc:~# pmtool DisableByID adi
+</code></pre></td></tr></table>
+</div>
+</div><p>By issueing the status command once again you can verify that the process has indeed been disabled</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">root@fmc:~# pmtool status | grep adi
+adi (normal) - User Disabled
+Command: /usr/local/sf/bin/adi
+PID File: /var/sf/run/adi.pid
+</code></pre></td></tr></table>
+</div>
+</div><p>After you are done troubleshooting dont forget to enable the process again and make sure it is indeed running again</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">root@fmc:~# pmtool EnableByID adi
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">root@fmc:~# pmtool status | grep adi
+adi (normal) - Running 2705
+Command: /usr/local/sf/bin/adi
+PID File: /var/sf/run/adi.pid
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="restart-process">Restart Process</h3>
+<p>If you get into a situation where a process is misbehaving (e.g. SFDataCorrelator not loading URL database into snort engine, adi not connecting to pxGRID correctly, snort dropping traffic unexpected, etc.) you may restart a process. Make sure you are aware of the function of the process and how it should behave if you restart it.</p>
+<p>For our example we will restart the ips engine processes (snort) on one of our sensors because we experience very high cpu usage that can be tracked back to snort and traffic is being dropped unexected. Be aware that restarting snort may lead to temporary traffic loss for up to a few seconds.</p>
+<p>if you want to restart all snort processes make sure you use the restartByType keyword and not restartById</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">root@ftd:/home/admin# pmtool restartByType snort
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2017-01-26</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dependencyhell.net/2017-01-26-firepower-process-management/" data-title="Firepower Process Management" data-via="https://twitter.com/xkaisero" data-hashtags="firepower,troubleshooting"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dependencyhell.net/2017-01-26-firepower-process-management/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/firepower/">firepower</a>,&nbsp;<a href="/tags/troubleshooting/">troubleshooting</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2017-01-25-firepower-files-and-processes/" class="prev" rel="prev" title="Firepower Files and Processes"><i class="fas fa-angle-left fa-fw"></i>Firepower Files and Processes</a>
+            <a href="/2017-01-27-firepower-6.2-release/" class="next" rel="next" title="Firepower 6.2.0 Release">Firepower 6.2.0 Release<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript">Disqus</a>.
+            </noscript></div></article></div>
+            </main></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="https://dependencyhell.disqus.com/embed.js" defer></script><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', 'UA-90912607-1', { 'anonymize_ip': true });
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-90912607-1" async></script></body>
+</html>

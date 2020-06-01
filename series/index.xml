@@ -1,0 +1,8 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Series - series - Dependency Hell</title>
+        <link>https://dependencyhell.net/series/</link>
+        <description>Series - series - Dependency Hell</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><atom:link href="https://dependencyhell.net/series/" rel="self" type="application/rss+xml" /></channel>
+</rss>

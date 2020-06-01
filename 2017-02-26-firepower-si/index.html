@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Firepower Security Intelligence - Dependency Hell</title><meta name="Description" content=""><meta property="og:title" content="Firepower Security Intelligence" />
+<meta property="og:description" content="Security Intelligence (SI) is used to block connections based on reputation on firepower systems. It can be used to block traffic based on IP, DNS and URL and is useful as a first line of defense to blacklist undesirable connections from/to public ip addresses." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dependencyhell.net/2017-02-26-firepower-si/" />
+<meta property="article:published_time" content="2017-04-15T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-04-15T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Firepower Security Intelligence"/>
+<meta name="twitter:description" content="Security Intelligence (SI) is used to block connections based on reputation on firepower systems. It can be used to block traffic based on IP, DNS and URL and is useful as a first line of defense to blacklist undesirable connections from/to public ip addresses."/>
+<meta name="application-name" content="Dependency Hell">
+<meta name="apple-mobile-web-app-title" content="Dependency Hell"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://dependencyhell.net/2017-02-26-firepower-si/" /><link rel="prev" href="https://dependencyhell.net/2017-01-27-firepower-6.2-release/" /><link rel="next" href="https://dependencyhell.net/2017-05-06-ftd-software-quality/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Firepower Security Intelligence",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dependencyhell.net\/2017-02-26-firepower-si\/"
+        },"genre": "posts","keywords": "si, configuration, troubleshooting","wordcount":  948 ,
+        "url": "https:\/\/dependencyhell.net\/2017-02-26-firepower-si\/","datePublished": "2017-04-15T00:00:00+00:00","dateModified": "2017-04-15T00:00:00+00:00","author": {
+                "@type": "Person",
+                "name": "Oliver Kaiser"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Dependency Hell">Dependency Hell</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Dependency Hell"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Dependency Hell">Dependency Hell</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Dependency Hell">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Firepower Security Intelligence</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-04-15">2017-04-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;948 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#configuration">Configuration</a></li>
+    <li><a href="#traffic-flow">Traffic Flow</a></li>
+    <li><a href="#troubleshooting">Troubleshooting</a>
+      <ul>
+        <li><a href="#feed-downloads">Feed downloads</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>Security Intelligence (SI) is used to block connections based on reputation on firepower systems. It can be used to block traffic based on IP, DNS and URL and is useful as a first line of defense to blacklist undesirable connections from/to public ip addresses.</p>
+<p>Security Intelligence is very easy to configure and is applied globally to an access-control-policy. You can either use cisco provided feeds or upload your own SI feeds that can be polled frequently. (e.g. via http from a webserver). Another option would be manually creating a list which can be edited in the object manager, which is rather static. If possible try to use a feed that is automatically downloaded for more flexibility.</p>
+<p>In case you encounter any false positives and legitimate traffic is being blocked by SI you can whitelist SI entries using the context explorer or the object manager.</p>
+<p>If you want to use custom feeds you can create your own feed or use publicly available feeds like these:</p>
+<ul>
+<li>Cisco Talos: <a href="http://www.talosintelligence.com/feeds/ip-filter.blf">http://www.talosintelligence.com/feeds/ip-filter.blf</a></li>
+<li>Malc0de: <a href="http://malc0de.com/bl/IP_Blacklist.txt">http://malc0de.com/bl/IP_Blacklist.txt</a></li>
+<li>SANS: <a href="https://isc.sans.edu/feeds/suspiciousdomains_High.txt">https://isc.sans.edu/feeds/suspiciousdomains_High.txt</a></li>
+</ul>
+<p>The cisco provided feeds are categorized to allow granular control on which elements should be blocked. As a general rule of thumb I would not use the spam feed for my installations since I don&rsquo;t want my firewall to block mail traffic, which should be filtered by a email security appliance which provides more granular control on what to do with undesired content.</p>
+<p>When using SI keep in mind that some changes to the feeds will require you to manually re-deploy your configuration for changes to take effect. See the table below for more information:</p>
+<table>
+<thead>
+<tr>
+<th>Object Type</th>
+<th>Edit capabilities</th>
+<th>Redeploy required after edit?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Lists</td>
+<td>Add entries using context menu, delete entries using object manager</td>
+<td>No, after adding entries. Yes after deleting entries</td>
+</tr>
+<tr>
+<td>Custom Lists</td>
+<td>Upload new/replacement lists using object manager</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>System-provided feeds</td>
+<td>Modify update frequency</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Custom feeds</td>
+<td>Modify using object manager</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Sinkhole</td>
+<td>Modify using object manager</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<h2 id="configuration">Configuration</h2>
+<p>SI configuration consists of two (or three for DNS SI) essential steps:</p>
+<ol>
+<li>Configure your feeds &amp; polling intervals</li>
+<li>Configure a DNS policy for DNS feeds (not covered in this post)</li>
+<li>Apply SI to you access control policy</li>
+</ol>
+<p>To configure a new feed navigate to <strong>Objects &gt; Object Management &gt; Security Intelligence</strong> in FMC UI and choose the appropriate feed type to configure. In this example we will add the malc0de blacklist to FMC and set the update frequency to 30 minutes to make sure our feed is always up to date.</p>
+<p>![si01]({{ site.url }}/images/posts/2017-04-15-Security-Intelligence/si-01.png)</p>
+<p>After pressing ok, the feed will be downloaded to FMC and you may proceed with configuring your access control policy to use your SI feed. Navigate to <strong>Policies &gt; Access Control</strong>, select your ACP and navigate to the <strong>Security Intelligence</strong> tab.</p>
+<p>Search for the newly defined SI feed and add it to the blacklist. After you are done with the configuration you have to deploy your configuration for changes to take effect.</p>
+<p>![si01]({{ site.url }}/images/posts/2017-04-15-Security-Intelligence/si-02.png)</p>
+<h2 id="traffic-flow">Traffic Flow</h2>
+<p>Security Intelligence is being enforced within SNORT. If you want to whitelist traffic that would be blocked by SI you will need to create a rule in your pre-filter policy (if you use FTD) or add the false positive to your whitelist to make sure traffic to/from the address is not being blocked.</p>
+<p>![si03]({{ site.url }}/images/posts/2017-04-15-Security-Intelligence/si-03.png)</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>If you are interested in in the content of the downloaded feeds you will need to SSH into FMC and check the feeds via CLI. Unfortunately there is no way to use the FMC UI to check the content of the downloaded feeds yet.</p>
+<p>FMC downloads the feeds to the following locations</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IP</td>
+<td>/var/sf/iprep_download</td>
+</tr>
+<tr>
+<td>DNS</td>
+<td>/var/sf/sidns_download</td>
+</tr>
+<tr>
+<td>URL</td>
+<td>/var/sf/siurl_download</td>
+</tr>
+</tbody>
+</table>
+<p>If you want to check the feeds for a specific entry you can use grep to filter the content of the feeds. Using the -H flag you can display the ID of the feed where the entry was found,</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">admin@firesight:/var/sf/iprep_download$ grep -H 31.210.117.131 *-*
+032ba433-c295-11e4-a919-d4ae5275a468:31.210.117.131
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="feed-downloads">Feed downloads</h3>
+<p>If you would like to verify that your feed download is working correctly you can use the <strong>Download Feeds</strong> option in FMC UI. Unfortunately the progress of the download is not being displayed in the task view of FMC that&rsquo;s why you will need to check the /var/log/messages logfile to see if the download has been successful.</p>
+<p>![si04]({{ site.url }}/images/posts/2017-04-15-Security-Intelligence/si-04.png)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Apr 15 16:17:19 firesight SF-IMS[3911]: [3962] CloudAgent:IPReputation [INFO] List 3d8b6b1e-21f3-11e7-a642-c0759f5522e3 being updated up_freq: 0 need_update: 0 
+Apr 15 16:17:19 firesight SF-IMS[3911]: [3962] CloudAgent:IPReputation [INFO] Response code: 200 
+Apr 15 16:17:19 firesight SF-IMS[3911]: [3962] CloudAgent:IPReputation [INFO] Content type: text/plain
+Apr 15 16:17:19 firesight SF-IMS[3911]: [3962] CloudAgent:IPReputation [INFO] Download size in bytes: 729 
+Apr 15 16:17:19 firesight SF-IMS[3911]: [3962] CloudAgent:IPReputation [INFO] Download speed bytes/sec: 3192
+Apr 15 16:17:19 firesight SF-IMS[3911]: [3962] CloudAgent:IPValidator [INFO] Processing file /var/sf/iprep_download/tmp/3d8b6b1e-21f3-11e7-a642-c0759f5522e3
+Apr 15 16:17:19 firesight SF-IMS[3911]: [3962] CloudAgent:IPReputation [INFO] Successfully downloaded 3d8b6b1e-21f3-11e7-a642-c0759f5522e3 &lt;--- Download has been successful!
+
+</code></pre></td></tr></table>
+</div>
+</div><p>If you have multiple feeds you will want to check the /etc/sf/iprep_sources.conf configuration file to verify the ID of your feed.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cat /etc/sf/iprep_sources.conf
+(...)
+    3d8b6b1e-21f3-11e7-a642-c0759f5522e3 &lt;--- ID of the Feed
+    {
+        ITEM_NAME malcode; &lt;--- Name in FMC UI
+        HOST_URL http://malc0de.com/bl/IP_Blacklist.txt; 
+        UPDATE_FREQ 6; &lt;-- Frequency in 5min steps (5 * 6 = 30 minutes configured)
+        NEED_UPDATE 1;
+    }
+</code></pre></td></tr></table>
+</div>
+</div><p>As you can see the ID referenced in /var/log/messages matches our malc0de blacklist. Now that you know the ID of the feed you can also check the downloaded file of our ip reputation feed which is being saved to /var/sf/iprep_download/&lt;feed_id&gt;</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">admin@firesight:~$ more /var/sf/iprep_download/3d8b6b1e-21f3-11e7-a642-c0759f5522e3
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">#malcode
+104.214.150.216
+54.230.87.253
+162.249.2.136
+183.47.234.108
+85.159.66.172
+121.41.10.159
+52.84.125.52
+183.47.234.107
+(...)
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2017-04-15</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dependencyhell.net/2017-02-26-firepower-si/" data-title="Firepower Security Intelligence" data-via="https://twitter.com/xkaisero" data-hashtags="si,configuration,troubleshooting"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dependencyhell.net/2017-02-26-firepower-si/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/si/">si</a>,&nbsp;<a href="/tags/configuration/">configuration</a>,&nbsp;<a href="/tags/troubleshooting/">troubleshooting</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2017-01-27-firepower-6.2-release/" class="prev" rel="prev" title="Firepower 6.2.0 Release"><i class="fas fa-angle-left fa-fw"></i>Firepower 6.2.0 Release</a>
+            <a href="/2017-05-06-ftd-software-quality/" class="next" rel="next" title="FTD Software Quality">FTD Software Quality<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript">Disqus</a>.
+            </noscript></div></article></div>
+            </main></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="https://dependencyhell.disqus.com/embed.js" defer></script><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', 'UA-90912607-1', { 'anonymize_ip': true });
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-90912607-1" async></script></body>
+</html>

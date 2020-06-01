@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Troubleshooting Firepower User Identity - Dependency Hell</title><meta name="Description" content=""><meta property="og:title" content="Troubleshooting Firepower User Identity" />
+<meta property="og:description" content="Troubleshooting user identity issues on firepower systems can be quite daunting at times if you do not know where exactly you should look for issues. After encountering many different problems I thought it might be a good idea write down what I have learned from various troubleshooting sessions since unfortunately the amount of available documentation is quite lacking." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dependencyhell.net/2017-01-14-troubleshooting-firepower-identity/" />
+<meta property="article:published_time" content="2017-01-14T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-01-14T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Troubleshooting Firepower User Identity"/>
+<meta name="twitter:description" content="Troubleshooting user identity issues on firepower systems can be quite daunting at times if you do not know where exactly you should look for issues. After encountering many different problems I thought it might be a good idea write down what I have learned from various troubleshooting sessions since unfortunately the amount of available documentation is quite lacking."/>
+<meta name="application-name" content="Dependency Hell">
+<meta name="apple-mobile-web-app-title" content="Dependency Hell"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://dependencyhell.net/2017-01-14-troubleshooting-firepower-identity/" /><link rel="prev" href="https://dependencyhell.net/2020-05-20-ise-passiveid/" /><link rel="next" href="https://dependencyhell.net/2017-01-24-troubleshooting-firepower-url-filtering/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Troubleshooting Firepower User Identity",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/dependencyhell.net\/2017-01-14-troubleshooting-firepower-identity\/"
+        },"genre": "posts","keywords": "identity, troubleshooting","wordcount":  1390 ,
+        "url": "https:\/\/dependencyhell.net\/2017-01-14-troubleshooting-firepower-identity\/","datePublished": "2017-01-14T00:00:00+00:00","dateModified": "2017-01-14T00:00:00+00:00","author": {
+                "@type": "Person",
+                "name": "Oliver Kaiser"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Dependency Hell">Dependency Hell</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Dependency Hell"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Dependency Hell">Dependency Hell</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Dependency Hell">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Troubleshooting Firepower User Identity</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-01-14">2017-01-14</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1390 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#architecture">Architecture</a>
+      <ul>
+        <li><a href="#summary">Summary</a></li>
+      </ul>
+    </li>
+    <li><a href="#basic-troubleshooting">Basic Troubleshooting</a>
+      <ul>
+        <li><a href="#verify-connectivity-between-fmc-and-ise">Verify Connectivity between FMC and ISE</a>
+          <ul>
+            <li><a href="#additional-troubleshooting-information">Additional Troubleshooting information</a></li>
+          </ul>
+        </li>
+        <li><a href="#verify-connectivity-between-fmc-and-active-directory">Verify Connectivity between FMC and Active Directory</a>
+          <ul>
+            <li><a href="#additional-troubleshooting-information-1">Additional Troubleshooting information</a></li>
+          </ul>
+        </li>
+        <li><a href="#verify-access-control-policy-configuration">Verify Access Control Policy Configuration</a></li>
+      </ul>
+    </li>
+    <li><a href="#advanced-troubleshooting">Advanced Troubleshooting</a>
+      <ul>
+        <li><a href="#debugging-adi">Debugging ADI</a></li>
+        <li><a href="#dump-identity-mappings">Dump Identity Mappings</a>
+          <ul>
+            <li><a href="#fmc-mysql-database">FMC Mysql database</a></li>
+            <li><a href="#sensor-identity-snapshot">Sensor Identity Snapshot</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#edit">EDIT</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>Troubleshooting user identity issues on firepower systems can be quite daunting at times if you do not know where exactly you should look for issues. After encountering many different problems I thought it might be a good idea write down what I have learned from various troubleshooting sessions since unfortunately the amount of available documentation is quite lacking.</p>
+<h2 id="architecture">Architecture</h2>
+<p>Before diving into the various tools we can use to troubleshoot identity issues lets focus on how exactly passive user identity is working and how we are able to accurately map users to ip addresses.</p>
+<p>In most scenarios we are using a LDAP directory to fetch user to ip mappings. Because users are using a central point to authenticate to the corporate network we can query our directory service (e.g. Active Directory) to find out which ip address generated a logon event. To fetch this information we can use two different approaches.</p>
+<p>The first approach is using a dedicated agent that must be installed on a domain-joined windows server. The Firepower User Agent (FUA) will be used to query the active directory security log for logon events and send this information to FMC using a direct connection to the FMC Mysql database.</p>
+<p>The second approach is using Cisco ISE integration. ISE joins a active directory domain to query the security log for logon events using WMI. This information is then propagated to FMC using pxGrid.</p>
+<p>Apart from fetching ip mappings using either FUA or ISE, Firepower Management Center will also directly query the ldap directory to download user to group mappings. A so called &ldquo;Realm&rdquo; is configured on FMC to periodically download this information to FMC to keep track of any changes that might occur (e.g. new user added to group HR, users being deleted, etc.)</p>
+<p>The last step in the chain is propagating the received user to group mappings and user to ip mappings to the sensors. To ensure the identity information is sent to the correct sensors, we must associate a Identity Policy to our Access Control Policy in FMC. The Identity Policy will define which Realm to use and for which network ranges we want to send identity mappings to our sensors (e.g. only send user:ip mappings to sensor if ip address is within a certain private ipv4 range).</p>
+<p>After the Access Control Policy with the associated Identity Policy has been deployed to our sensor, FMC will  forward identity information to the sensor using a tls encrypted tunnel (sftunnel) that is used for communication between FMC and the sensor. SFTunnel is used for communication between the two devices and is utilized for various purposes (monitoring, configuraton deployment, updates, etc.). A snapshot of the currently available mappings is pushed by FMC to the sensor over sftunnel, which is then processed by the SFDataCorrelator process.</p>
+<h3 id="summary">Summary</h3>
+<ol>
+<li>User identity integration is implemented centrally using FMC</li>
+<li>FMC connects directly to the directory service to download user to group mappings (realm configuration)</li>
+<li>FMC connects to either Firepower User Agent or ISE pxGRID to receive user to ip mappings</li>
+<li>An Identity Policy must be assigned to the Access Control Policy to send user:ip mappings to sensors</li>
+<li>FMC pushes identity information to sensors using a tls encrypted tunnel named sftunnel</li>
+</ol>
+<h2 id="basic-troubleshooting">Basic Troubleshooting</h2>
+<p>This section contains various troubleshooting steps that can be performed to solve common user identity related issues.</p>
+<h3 id="verify-connectivity-between-fmc-and-ise">Verify Connectivity between FMC and ISE</h3>
+<p>Under the Identity Sources menu in the FMC UI, the connection status between FMC and ISE can be tested. Since pxGRID will only be active on the Primary Administration Unit (PAN) on ISE, you will see the connection to one ISE failing. This is perfectly fine.</p>
+<p>Navigate to <strong>System &gt; Integration &gt; Identity Sources &gt; Identity Service Engine</strong> to verify the connection status</p>
+<p>![pxgrid02]({{ site.url }}/images/posts/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_02.png)</p>
+<p>You may use the <strong>Additional Logs</strong> section to check for error information. Normally issues can be traced back to connectivity issues between FMC and ISE (e.g. missing firewall rules) or certificate mismatches.</p>
+<p>Another method of checking the pxGRID connection is to directly connect to ISE and check the pxGRID Services status. If FMC is listed as Subscriber for identity information you are good to go.</p>
+<p>To check the status of pxGRID on ISE navigate to <strong>Administration &gt; pxGrid Services &gt; Clients</strong> on the PAN.</p>
+<p>![pxgrid01]({{ site.url }}/images/posts/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_01.png)</p>
+<h4 id="additional-troubleshooting-information">Additional Troubleshooting information</h4>
+<p>If you are looking for additional troubleshooting logs for pxGRID you may want to check out <code>/var/log/messages</code> on FMC. Use the following command to check for ISE related log entries:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cat /var/log/messages | grep adi.ISEConnection
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="verify-connectivity-between-fmc-and-active-directory">Verify Connectivity between FMC and Active Directory</h3>
+<p>You may use the test function in the realm configuration to check the connection to a directory server. Navigate to <strong>System &gt; Integratrion &gt; Directory</strong> and edit the configured realm. A test button will appear which can be used to connect to the server.</p>
+<p>![fmc01]({{ site.url }}/images/posts/2017-01-14-Troubleshooting-Firepower-Identity/fmc_realm_troubleshooting_01.png)</p>
+<h4 id="additional-troubleshooting-information-1">Additional Troubleshooting information</h4>
+<p>If you are looking for additional troubleshooting logs for directory connections, you may want to check out <code>/var/log/messages</code> on FMC. Use the following command to check for directory related events that include additional information about connectivity issues between FMC and Active Directory.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">cat /var/log/messages | grep adi.Directory
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="verify-access-control-policy-configuration">Verify Access Control Policy Configuration</h3>
+<p>To make sure that identity mappings are pushed from FMC to your sensor make sure that your identity policy is referenced in your Access Control Policy.</p>
+<h2 id="advanced-troubleshooting">Advanced Troubleshooting</h2>
+<p>This section contains troubleshooting information for advanced issues. Use the following procedures at your own risk.</p>
+<h3 id="debugging-adi">Debugging ADI</h3>
+<p>Firepower Management Center and the sensor use the ADI process for identity related tasks. For example on FMC, ADI is used to connect to ldap directories, establish a connection to your FUA or ISE. To gather additional debug information you may start the process using a debug flag. Keep in mind that you have to kill the process before that, which will stop identity updates to your FMC. If you depend on identity integration dont leave it disabled for too long.</p>
+<ol>
+<li>
+<p>Login to FMC using SSH and change to root</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">sudo su -
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Disable adi process using process manager (pmtool)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">pmtool DisableById adi
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Verify adi is not running</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ps ax | grep adi
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Start adi process with debug flag, pipe output to <code>/var/tmp/adi-debug.log</code> and move process to background</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">nohup /usr/local/sf/bin/adi --debug &gt; /var/tmp/adi-debug.log 2&gt;&amp;1 &amp;
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Verify adi is up and running</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ps ax | grep adi
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>After gathering debug information kill adi again (use <code>ps</code> to find out pid)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">kill -9 &lt;adi-pid&gt;
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Enable adi process using process manager (pmtool)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">pmtool EnableById adi
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h3 id="dump-identity-mappings">Dump Identity Mappings</h3>
+<p>Firepower Management Center saves identity mappings to its mysql database. This information is then sent to the sensor using sftunnel. A file containing the current mappings is transferred to the sensor and processed by SFDataCorrelator which will write the current user:ip mappings to the local mysql database instance.</p>
+<p>If everything is working corretly you should find the user to ip mapping in three different locations</p>
+<ol>
+<li>Mysql database on FMC</li>
+<li>Identity snapshot on sensor</li>
+<li>Mysql database on sensor</li>
+</ol>
+<p>In case a user to ip mapping is not present anywhere down the road you probably hit a bug and should contact TAC.</p>
+<h4 id="fmc-mysql-database">FMC Mysql database</h4>
+<ol>
+<li>
+<p>Connect to FMC using SSH and login to mysql database. Use the default password &lsquo;admin&rsquo;.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql -uroot -p sfsnort
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Search database for the user that experiences issues (note user id after executing query)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql&gt; select * from user_identities where username like &#39;%&lt;your-username&gt;%&#39; \G
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Search database for user to ip mapping for the specified user (use user id for query)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">mysql&gt; select inet6_ntoa(ipaddr) FROM current_user_ip_map where id=&lt;user-id&gt; \G
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h4 id="sensor-identity-snapshot">Sensor Identity Snapshot</h4>
+<p>The user to ip snapshot is not human readable and must be dumped using the <code>u2dump</code> utility. Before dumping the identity mappings verify that a snapshot exists.</p>
+<ol>
+<li>
+<p>Connect to sensor using SSH, change to expert mode and change to root</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt; expert
+sudo su -
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Verify existance of user snapshot</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ls -lah /var/sf/user_enforcement
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Dump user snapshot to /var/tmp</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">u2dump /var/sf/user_enforcement/user_ip_map.* &gt; /var/tmp/user-ip-map.dump
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Open user snapshot using <code>vi</code>(you might also use another text editor or use <code>more</code> but I prefer vi to search)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">vi /var/tmp/user-ip-map.dump
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h2 id="edit">EDIT</h2>
+<p>2019-11-25: Removed incorrect information about communication between Firepower User Agent and FMC. FUA does not utilize FMCs REST interface but a direct database connection (thanks to Alexander V. for bringing this to my attention)</p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2017-01-14</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dependencyhell.net/2017-01-14-troubleshooting-firepower-identity/" data-title="Troubleshooting Firepower User Identity" data-via="https://twitter.com/xkaisero" data-hashtags="identity,troubleshooting"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dependencyhell.net/2017-01-14-troubleshooting-firepower-identity/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/identity/">identity</a>,&nbsp;<a href="/tags/troubleshooting/">troubleshooting</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2020-05-20-ise-passiveid/" class="prev" rel="prev" title=""><i class="fas fa-angle-left fa-fw"></i></a>
+            <a href="/2017-01-24-troubleshooting-firepower-url-filtering/" class="next" rel="next" title="Troubleshooting Firepower URL Filtering">Troubleshooting Firepower URL Filtering<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript">Disqus</a>.
+            </noscript></div></article></div>
+            </main></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="https://dependencyhell.disqus.com/embed.js" defer></script><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', 'UA-90912607-1', { 'anonymize_ip': true });
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-90912607-1" async></script></body>
+</html>
