@@ -12,6 +12,7 @@
             <loc>https://dependencyhell.net/categories/firepower/</loc><lastmod>2018-04-06T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dependencyhell.net/2018-04-08-ftd-unsupported-features/</loc><lastmod>2018-04-06T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dependencyhell.net/tags/overview/</loc><lastmod>2018-04-06T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dependencyhell.net/tags/6.2.0/</loc><lastmod>2017-08-27T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dependencyhell.net/tags/6.2.0.2/</loc><lastmod>2017-08-27T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dependencyhell.net/2017-08-27-automating-acp-bulk-changes/</loc><lastmod>2017-08-27T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dependencyhell.net/2017-08-27-automating-fxos-provisioning/</loc><lastmod>2017-08-27T00:00:00&#43;00:00</lastmod></url><url>
@@ -21,7 +22,6 @@
             <loc>https://dependencyhell.net/2017-08-27-large-fmc-backup/</loc><lastmod>2017-08-27T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dependencyhell.net/tags/fxos/</loc><lastmod>2017-08-27T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dependencyhell.net/tags/python/</loc><lastmod>2017-08-27T00:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://dependencyhell.net/tags/6.2.0/</loc><lastmod>2017-08-04T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dependencyhell.net/tags/cscve09249/</loc><lastmod>2017-08-04T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dependencyhell.net/tags/cscve45948/</loc><lastmod>2017-08-04T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dependencyhell.net/2017-08-05-ftd-vs-ftp/</loc><lastmod>2017-08-04T00:00:00&#43;00:00</lastmod></url><url>
@@ -45,5 +45,6 @@
             <loc>https://dependencyhell.net/2017-01-24-troubleshooting-firepower-url-filtering/</loc><lastmod>2017-01-24T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dependencyhell.net/tags/identity/</loc><lastmod>2017-01-14T00:00:00&#43;00:00</lastmod></url><url>
             <loc>https://dependencyhell.net/2017-01-14-troubleshooting-firepower-identity/</loc><lastmod>2017-01-14T00:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://dependencyhell.net/about/</loc><priority>0</priority></url><url>
             <loc>https://dependencyhell.net/2020-05-20-ise-passiveid/</loc></url><url>
             <loc>https://dependencyhell.net/series/</loc></url></urlset>

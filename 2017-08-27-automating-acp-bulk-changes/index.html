@@ -5,14 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-        <title>Automating ACP Changes - Dependency Hell</title><meta name="Description" content=""><meta property="og:title" content="Automating ACP Changes" />
+        <title>Automating Accesspolicy changes - Dependency Hell</title><meta name="Description" content=""><meta property="og:title" content="Automating Accesspolicy changes" />
 <meta property="og:description" content="In the last few months I have found many people on the cisco support forums asking for a way to do bulk changes to their access control policy in FMC. Since the UI does not provide this functionality we can make use of the REST API of FMC to accomplish this task" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://dependencyhell.net/2017-08-27-automating-acp-bulk-changes/" />
 <meta property="article:published_time" content="2017-08-27T00:00:00+00:00" />
 <meta property="article:modified_time" content="2017-08-27T00:00:00+00:00" />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Automating ACP Changes"/>
+<meta name="twitter:title" content="Automating Accesspolicy changes"/>
 <meta name="twitter:description" content="In the last few months I have found many people on the cisco support forums asking for a way to do bulk changes to their access control policy in FMC. Since the UI does not provide this functionality we can make use of the REST API of FMC to accomplish this task"/>
 <meta name="application-name" content="Dependency Hell">
 <meta name="apple-mobile-web-app-title" content="Dependency Hell"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
@@ -21,7 +21,7 @@
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
-        "headline": "Automating ACP Changes",
+        "headline": "Automating Accesspolicy changes",
         "inLanguage": "en",
         "mainEntityOfPage": {
             "@type": "WebPage",
@@ -41,7 +41,7 @@
             <a href="/" title="Dependency Hell">Dependency Hell</a>
         </div>
         <div class="menu">
-            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Dependency Hell"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
                         <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
                         <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
                             <i class="fas fa-search fa-fw"></i>
@@ -84,7 +84,7 @@
                     <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
                         Cancel
                     </a>
-                </div><a class="menu-item" href="/posts/" title="Dependency Hell">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
                 <i class="fas fa-adjust fa-fw"></i>
             </a></div>
     </div>
@@ -99,7 +99,7 @@
                 <div class="container"><div class="toc" id="toc-auto">
             <h2 class="toc-title">Contents</h2>
             <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animated flipInX">Automating ACP Changes</h1><div class="post-meta">
+        </div><article class="page single"><h1 class="single-title animated flipInX">Automating Accesspolicy changes</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-08-27">2017-08-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;731 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
@@ -321,7 +321,7 @@ Trying set syslog server for rule permit-ntp in policy lab-policy...
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dependencyhell.net/2017-08-27-automating-acp-bulk-changes/" data-title="Automating ACP Changes" data-via="https://twitter.com/xkaisero" data-hashtags="automation,python"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dependencyhell.net/2017-08-27-automating-acp-bulk-changes/"><i class="fab fa-linkedin fa-fw"></i></a></span>
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://dependencyhell.net/2017-08-27-automating-acp-bulk-changes/" data-title="Automating Accesspolicy changes" data-via="https://twitter.com/xkaisero" data-hashtags="automation,python"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://dependencyhell.net/2017-08-27-automating-acp-bulk-changes/"><i class="fab fa-linkedin fa-fw"></i></a></span>
             </div>
         </div>
     </div>

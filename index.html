@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-	<meta name="generator" content="Hugo 0.72.0" />
+	<meta name="generator" content="Hugo 0.71.0" />
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
@@ -36,7 +36,7 @@
             <a href="/" title="Dependency Hell">Dependency Hell</a>
         </div>
         <div class="menu">
-            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Dependency Hell"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
                         <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
                         <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
                             <i class="fas fa-search fa-fw"></i>
@@ -79,7 +79,7 @@
                     <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
                         Cancel
                     </a>
-                </div><a class="menu-item" href="/posts/" title="Dependency Hell">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                </div><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
                 <i class="fas fa-adjust fa-fw"></i>
             </a></div>
     </div>
@@ -102,7 +102,7 @@
         <a href="/2018-04-08-ftd-unsupported-features/">Read More</a><div class="post-tags">
                 <i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/overview/">overview</a></div></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/2017-08-27-automating-acp-bulk-changes/">Automating ACP Changes</a>
+        <a href="/2017-08-27-automating-acp-bulk-changes/">Automating Accesspolicy changes</a>
     </h1><div class="post-meta"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-publish">published on <time datetime="2017-08-27">2017-08-27</time></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div><div class="content"><p>In the last few months I have found many people on the cisco support forums asking for a way to do bulk changes to their access control policy in FMC. Since the UI does not provide this functionality we can make use of the REST API of FMC to accomplish this task</p></div><div class="post-footer">
         <a href="/2017-08-27-automating-acp-bulk-changes/">Read More</a><div class="post-tags">
                 <i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/automation/">automation</a>,&nbsp;<a href="/tags/python/">python</a></div></div>
@@ -123,7 +123,7 @@
                 <i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/bug/">bug</a>,&nbsp;<a href="/tags/6.2.0/">6.2.0</a>,&nbsp;<a href="/tags/cscve45948/">cscve45948</a>,&nbsp;<a href="/tags/cscve09249/">cscve09249</a></div></div>
 </article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
         <a href="/2017-08-04-troubleshooting-firepower-upgrade/">Troubleshooting Firepower Upgrade</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-publish">published on <time datetime="2017-08-04">2017-08-04</time></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div><div class="content"><p>At some point we have all come across update issues with error messages like &ldquo;Update install failed.&rdquo;, without any further details available. In my opinion there should be more details on an UI to further troubleshoot issues like that, but when it comes to upgrade procedures on FMC that is about it.</p>
+    </h1><div class="post-meta"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-publish">published on <time datetime="2017-08-04">2017-08-04</time></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div><div class="content"><p>At some point we have all come across update issues with error messages like &ldquo;Update install failed.&quot;, without any further details available. In my opinion there should be more details on an UI to further troubleshoot issues like that, but when it comes to upgrade procedures on FMC that is about it.</p>
 <p>So how exactly should we start analyzing upgrade issues on FMC? Although the UI output is rather generic there is lots of information to be found using the CLI. Each upgrade procedure consists of a variaty of scripts that are being executed on the device that is being upgraded.</p></div><div class="post-footer">
         <a href="/2017-08-04-troubleshooting-firepower-upgrade/">Read More</a><div class="post-tags">
                 <i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/upgrade/">upgrade</a>,&nbsp;<a href="/tags/troubleshooting/">troubleshooting</a></div></div>
