@@ -26,7 +26,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/dependencyhell.net\/2017-01-24-troubleshooting-firepower-url-filtering\/"
-        },"genre": "posts","keywords": "troubleshooting","wordcount":  1382 ,
+        },"genre": "posts","keywords": "troubleshooting","wordcount":  1373 ,
         "url": "https:\/\/dependencyhell.net\/2017-01-24-troubleshooting-firepower-url-filtering\/","datePublished": "2017-01-24T00:00:00+00:00","dateModified": "2017-01-24T00:00:00+00:00","author": {
                 "@type": "Person",
                 "name": "Oliver Kaiser"
@@ -101,7 +101,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Troubleshooting Firepower URL Filtering</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-01-24">2017-01-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1382 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-01-24">2017-01-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1373 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
@@ -141,7 +141,15 @@
 <h2 id="architecture">Architecture</h2>
 <p>Lets start off by a quick introduction on how exactly URL Filtering works and what happens behind the scenes on a firepower system. URL Filtering is a L7 feature that will let you block web traffic based on URLs, Categories and Reputation. There are basically two different ways to use url filtering. First is creating your own lists and reference them in your access control policy. The second method is using the built-in url database for url categorization and  reputation scores. The database in question is Brightcloud which is provided by Webroot. It is commonly used in security products like Palo Alto Networks NGFW and also in Cisco Firepower for URL Intelligence.</p>
 <p>The brightcloud database is pushed from FMC to sensors with the url filtering license. To keep the url filtering database up to date it is recommended to enable automatic updates on FMC. By using this feature FMC will connect to brightcloud every 30 minutes to download any available updates and distribute the update to the sensors. To make sure you have automatic updates enabled navigate to <strong>System &gt; Integration &gt; Cisco CSI</strong></p>
-<p>![url01]({{ site.url }}/images/posts/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-01.png)</p>
+<a class="lightgallery" href="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-01.png" title="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-01.png" data-thumbnail="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-01.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-01.png"
+            data-srcset="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-01.png, /img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-01.png 1.5x, /img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-01.png 2x"
+            data-sizes="auto"
+            alt="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-01.png" />
+    </a>
 <p>In case an URL cannot be found in the local database the option <strong>Query Cisco CSI for Unknown URLs</strong> can be enabled on FMC to lookup unknown URLs on demand.</p>
 <h3 id="download-process">Download Process</h3>
 <p>As described above the url filtering database is first downloaded to FMC. This is done by the CloudAgent process which will save the database to <code>/var/sf/cloud_download/</code> on the FMC filesystem. The database is then pushed to sensors using sftunnel. sftunnel is the process which is used for communication between FMC and sensors. Data and files are being exchanged using the tls encrypted tunnel.</p>
@@ -164,11 +172,27 @@ In case any of the listed limitations are removed,  I will update this post.</p>
 <p>This section contains various troubleshooting steps that can be performed to solve common identity related issues.</p>
 <h3 id="verify-url-categorization">Verify URL Categorization</h3>
 <p>The simplest way to verify if an URL is correctly categorized is by checking the connection events on FMC. Navigate to ** Analysis &gt; Connections &gt; Events** and check the URL Category column.</p>
-<p>![url02]({{ site.url }}/images/posts/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-02.png)</p>
+<a class="lightgallery" href="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-02.png" title="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-02.png" data-thumbnail="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-02.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-02.png"
+            data-srcset="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-02.png, /img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-02.png 1.5x, /img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-02.png 2x"
+            data-sizes="auto"
+            alt="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-02.png" />
+    </a>
 <h3 id="verify-last-url-database-update">Verify last URL Database update</h3>
 <p>In case you  encounter issues with incorrect categorization you might wanna check when  your url database has been updated the last time.</p>
 <p>To check the last update  navigate to <strong>System &gt; Integration &gt; Cisco CSI</strong></p>
-<p>![url03]({{ site.url }}/images/posts/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-03.png)</p>
+<a class="lightgallery" href="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-03.png" title="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-03.png" data-thumbnail="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-03.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-03.png"
+            data-srcset="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-03.png, /img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-03.png 1.5x, /img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-03.png 2x"
+            data-sizes="auto"
+            alt="/img/2017-01-24-Troubleshooting-Firepower-URL-Filtering/url-filtering-03.png" />
+    </a>
 <p>If you are looking for previous update results you must login to fmc using ssh. Results of url database downloads are saved to <code>/var/log/urldb_log</code>. Keep in mind that the date is displayed in unix timestamp format so you will have to convert it to a human readable format.</p>
 <p>To display previous url database downloads execute the following command</p>
 <div class="highlight"><div class="chroma">

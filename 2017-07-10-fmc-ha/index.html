@@ -26,7 +26,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/dependencyhell.net\/2017-07-10-fmc-ha\/"
-        },"genre": "posts","keywords": "architecture, configuration","wordcount":  1311 ,
+        },"genre": "posts","keywords": "architecture, configuration","wordcount":  1305 ,
         "url": "https:\/\/dependencyhell.net\/2017-07-10-fmc-ha\/","datePublished": "2017-07-10T00:00:00+00:00","dateModified": "2017-07-10T00:00:00+00:00","author": {
                 "@type": "Person",
                 "name": "Oliver Kaiser"
@@ -101,7 +101,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Firepower Management Center HA</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-07-10">2017-07-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1311 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-07-10">2017-07-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1305 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
@@ -132,7 +132,15 @@
 <p>FMC HA will create a second &ldquo;manager&rdquo; registration on your sensor resulting in two sftunnel connections. One to your primary FMC and one to your secondary FMC.</p>
 <p>It is a cold-standby solution which forces you to promote the passive FMC to active in case of failure of the primary device, but dont worry&hellip; all your events will be logged to both FMCs so in case of device failure you should not lose any events sent from the sensor to FMC. Just promote the passive FMC and it will start up all the necessary processes and become the active unit.</p>
 <p>Behind the scenes the HA procedure consists of a sybase database mirror and a transaction framework that will make sure data is being replicated from the active to the passive management center.</p>
-<p>![fmc-ha-status]({{ site.url }}/images/posts/2017-07-10-FMC-HA/fmc-ha-design.png)</p>
+<a class="lightgallery" href="/img/2017-07-10-FMC-HA/fmc-ha-design.png" title="/img/2017-07-10-FMC-HA/fmc-ha-design.png" data-thumbnail="/img/2017-07-10-FMC-HA/fmc-ha-design.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/2017-07-10-FMC-HA/fmc-ha-design.png"
+            data-srcset="/img/2017-07-10-FMC-HA/fmc-ha-design.png, /img/2017-07-10-FMC-HA/fmc-ha-design.png 1.5x, /img/2017-07-10-FMC-HA/fmc-ha-design.png 2x"
+            data-sizes="auto"
+            alt="/img/2017-07-10-FMC-HA/fmc-ha-design.png" />
+    </a>
 <h3 id="configuration">Configuration</h3>
 <p>Before configuring FMC HA make sure that&hellip;</p>
 <ul>
@@ -143,7 +151,15 @@
 </ul>
 <p>To configure HA login to FMC UI, go to <code>Integration &gt; High Availability</code>  and define a secondary peer. Then you grab some coffee&hellip; because it will take some time and you will see some warnings that will make you think it didnt work, but just be patient.</p>
 <p>After some minutes the status of HA Synchcronization should change to &ldquo;OK&rdquo; like this:</p>
-<p>![fmc-ha-status]({{ site.url }}/images/posts/2017-07-10-FMC-HA/fmc-ha-status.png)</p>
+<a class="lightgallery" href="/img/2017-07-10-FMC-HA/fmc-ha-status.png" title="/img/2017-07-10-FMC-HA/fmc-ha-status.png" data-thumbnail="/img/2017-07-10-FMC-HA/fmc-ha-status.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/2017-07-10-FMC-HA/fmc-ha-status.png"
+            data-srcset="/img/2017-07-10-FMC-HA/fmc-ha-status.png, /img/2017-07-10-FMC-HA/fmc-ha-status.png 1.5x, /img/2017-07-10-FMC-HA/fmc-ha-status.png 2x"
+            data-sizes="auto"
+            alt="/img/2017-07-10-FMC-HA/fmc-ha-status.png" />
+    </a>
 <p>At this point your sensors should be registered with your passive FMC and should be listed when you navigate to the devices page on the passive FMC.</p>
 <h3 id="upgrade-procedure">Upgrade Procedure</h3>
 <p>To upgrade an FMC in HA you will have to follow the following instructions:</p>

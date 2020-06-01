@@ -26,7 +26,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/dependencyhell.net\/2017-01-27-firepower-6.2-release\/"
-        },"genre": "posts","keywords": "release-notes, opinion","wordcount":  2103 ,
+        },"genre": "posts","keywords": "release-notes, opinion","wordcount":  2097 ,
         "url": "https:\/\/dependencyhell.net\/2017-01-27-firepower-6.2-release\/","datePublished": "2017-01-27T00:00:00+00:00","dateModified": "2017-01-27T00:00:00+00:00","author": {
                 "@type": "Person",
                 "name": "Oliver Kaiser"
@@ -101,7 +101,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Firepower 6.2.0 Release</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-01-27">2017-01-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;2103 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-01-27">2017-01-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;2097 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;10 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
@@ -199,7 +199,15 @@
 <p>The Packet Tracer and Capture offers the ability to show all the processing steps that a packet takes, the outcomes, and whether the traffic is blocked or allowed. This allows users to initiate and display output of tracing from the Firepower Management Center. The tracing information includes information from SNORT and preprocessors about verdicts and action taken while processing a packet.</p>
 <h4 id="comment-1">Comment</h4>
 <p>This feature in itself is not exactly new but before 6.2 there was no available method to capture on FTD from the FMC UI. You would have to go to the CLI and capture using the trace option on lina. To capture traffic using FMC goto <strong>Health &gt; Monitor</strong>, select your FTD device and click the advanced troubleshooting button.</p>
-<p>![packetcapture]({{ site.url }}/images/posts/2017-01-27-Firepower-6-2/packet-capture.png)</p>
+<a class="lightgallery" href="/img/2017-01-27-Firepower-6-2/packet-capture.png" title="/img/2017-01-27-Firepower-6-2/packet-capture.png" data-thumbnail="/img/2017-01-27-Firepower-6-2/packet-capture.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/2017-01-27-Firepower-6-2/packet-capture.png"
+            data-srcset="/img/2017-01-27-Firepower-6-2/packet-capture.png, /img/2017-01-27-Firepower-6-2/packet-capture.png 1.5x, /img/2017-01-27-Firepower-6-2/packet-capture.png 2x"
+            data-sizes="auto"
+            alt="/img/2017-01-27-Firepower-6-2/packet-capture.png" />
+    </a>
 <h3 id="integrated-routing-and-bridging-irb">Integrated Routing and Bridging (IRB)</h3>
 <p>Customers often want to have multiple physical interfaces configured to be part of the same VLAN. The IRB feature meets this demand by allowing users to configure bridges in routed mode, and enables the devices to perform L2 switching between interfaces (including subinterfaces).</p>
 <h4 id="comment-2">Comment</h4>
@@ -224,7 +232,15 @@ You can also enable and disable eventing of a given IOC per user (against false 
 <p>This feature allows you to perform a bulk lookup of URLs (up to 250 URLs at a time) to obtain information, such as reputation, category, and matching policy. You can also export the results as a file of comma-separated values. The feature reduces the manual work necessary to determine if your organization is protected against a malicious URL or if you should add a custom rule for a specific IOC. You can use this feature to reduce the number of custom rules, which in turn reduces the chance of performance degradation due to extensive custom rule lists.</p>
 <h5 id="comment-6">Comment</h5>
 <p>This will definitely be a time-saver when troubleshooting URL Filtering related issue. On a side note I would really like to see options for Block Pages to include information like Category, Reputation, etc. Not knowing why content was blocked is annoying for users.</p>
-<p>![url-lookup]({{ site.url }}/images/posts/2017-01-27-Firepower-6-2/url-lookup.png)</p>
+<a class="lightgallery" href="/img/2017-01-27-Firepower-6-2/url-lookup.png" title="/img/2017-01-27-Firepower-6-2/url-lookup.png" data-thumbnail="/img/2017-01-27-Firepower-6-2/url-lookup.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/2017-01-27-Firepower-6-2/url-lookup.png"
+            data-srcset="/img/2017-01-27-Firepower-6-2/url-lookup.png, /img/2017-01-27-Firepower-6-2/url-lookup.png 1.5x, /img/2017-01-27-Firepower-6-2/url-lookup.png 2x"
+            data-sizes="auto"
+            alt="/img/2017-01-27-Firepower-6-2/url-lookup.png" />
+    </a>
 <h3 id="flexconfig">FlexConfig</h3>
 <p>The FlexConfig feature allows you use the Firepower Management Center to deploy ASA CLI template-based functionality to Firepower Threat Defense devices. This feature allows you to enable some of the most valuable ASA functions that are not currently available on Firepower Threat Defense devices. This functionality is structured as templates and objects that are stitched together in a policy. The default templates are officially supported by Cisco TAC.
 The targeted features unlocked by FlexConfig potentially include:</p>

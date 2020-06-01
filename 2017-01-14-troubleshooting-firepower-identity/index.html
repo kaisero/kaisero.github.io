@@ -26,7 +26,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/dependencyhell.net\/2017-01-14-troubleshooting-firepower-identity\/"
-        },"genre": "posts","keywords": "identity, troubleshooting","wordcount":  1390 ,
+        },"genre": "posts","keywords": "identity, troubleshooting","wordcount":  1381 ,
         "url": "https:\/\/dependencyhell.net\/2017-01-14-troubleshooting-firepower-identity\/","datePublished": "2017-01-14T00:00:00+00:00","dateModified": "2017-01-14T00:00:00+00:00","author": {
                 "@type": "Person",
                 "name": "Oliver Kaiser"
@@ -101,7 +101,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Troubleshooting Firepower User Identity</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-01-14">2017-01-14</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1390 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-01-14">2017-01-14</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1381 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
@@ -166,11 +166,27 @@
 <h3 id="verify-connectivity-between-fmc-and-ise">Verify Connectivity between FMC and ISE</h3>
 <p>Under the Identity Sources menu in the FMC UI, the connection status between FMC and ISE can be tested. Since pxGRID will only be active on the Primary Administration Unit (PAN) on ISE, you will see the connection to one ISE failing. This is perfectly fine.</p>
 <p>Navigate to <strong>System &gt; Integration &gt; Identity Sources &gt; Identity Service Engine</strong> to verify the connection status</p>
-<p>![pxgrid02]({{ site.url }}/images/posts/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_02.png)</p>
+<a class="lightgallery" href="/img/posts/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_02.png" title="/img/posts/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_02.png" data-thumbnail="/img/posts/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_02.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/posts/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_02.png"
+            data-srcset="/img/posts/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_02.png, /img/posts/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_02.png 1.5x, /img/posts/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_02.png 2x"
+            data-sizes="auto"
+            alt="/img/posts/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_02.png" />
+    </a>
 <p>You may use the <strong>Additional Logs</strong> section to check for error information. Normally issues can be traced back to connectivity issues between FMC and ISE (e.g. missing firewall rules) or certificate mismatches.</p>
 <p>Another method of checking the pxGRID connection is to directly connect to ISE and check the pxGRID Services status. If FMC is listed as Subscriber for identity information you are good to go.</p>
 <p>To check the status of pxGRID on ISE navigate to <strong>Administration &gt; pxGrid Services &gt; Clients</strong> on the PAN.</p>
-<p>![pxgrid01]({{ site.url }}/images/posts/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_01.png)</p>
+<a class="lightgallery" href="/img/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_01.png" title="/img/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_01.png" data-thumbnail="/img/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_01.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_01.png"
+            data-srcset="/img/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_01.png, /img/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_01.png 1.5x, /img/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_01.png 2x"
+            data-sizes="auto"
+            alt="/img/2017-01-14-Troubleshooting-Firepower-Identity/troubleshooting_ise_pxgrid_01.png" />
+    </a>
 <h4 id="additional-troubleshooting-information">Additional Troubleshooting information</h4>
 <p>If you are looking for additional troubleshooting logs for pxGRID you may want to check out <code>/var/log/messages</code> on FMC. Use the following command to check for ISE related log entries:</p>
 <div class="highlight"><div class="chroma">
@@ -183,7 +199,15 @@
 </div>
 </div><h3 id="verify-connectivity-between-fmc-and-active-directory">Verify Connectivity between FMC and Active Directory</h3>
 <p>You may use the test function in the realm configuration to check the connection to a directory server. Navigate to <strong>System &gt; Integratrion &gt; Directory</strong> and edit the configured realm. A test button will appear which can be used to connect to the server.</p>
-<p>![fmc01]({{ site.url }}/images/posts/2017-01-14-Troubleshooting-Firepower-Identity/fmc_realm_troubleshooting_01.png)</p>
+<a class="lightgallery" href="/img/2017-01-14-Troubleshooting-Firepower-Identity/fmc_realm_troubleshooting_01.png" title="/img/2017-01-14-Troubleshooting-Firepower-Identity/fmc_realm_troubleshooting_01.png" data-thumbnail="/img/2017-01-14-Troubleshooting-Firepower-Identity/fmc_realm_troubleshooting_01.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/2017-01-14-Troubleshooting-Firepower-Identity/fmc_realm_troubleshooting_01.png"
+            data-srcset="/img/2017-01-14-Troubleshooting-Firepower-Identity/fmc_realm_troubleshooting_01.png, /img/2017-01-14-Troubleshooting-Firepower-Identity/fmc_realm_troubleshooting_01.png 1.5x, /img/2017-01-14-Troubleshooting-Firepower-Identity/fmc_realm_troubleshooting_01.png 2x"
+            data-sizes="auto"
+            alt="/img/2017-01-14-Troubleshooting-Firepower-Identity/fmc_realm_troubleshooting_01.png" />
+    </a>
 <h4 id="additional-troubleshooting-information-1">Additional Troubleshooting information</h4>
 <p>If you are looking for additional troubleshooting logs for directory connections, you may want to check out <code>/var/log/messages</code> on FMC. Use the following command to check for directory related events that include additional information about connectivity issues between FMC and Active Directory.</p>
 <div class="highlight"><div class="chroma">

@@ -26,7 +26,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/dependencyhell.net\/2017-02-26-firepower-si\/"
-        },"genre": "posts","keywords": "si, configuration, troubleshooting","wordcount":  948 ,
+        },"genre": "posts","keywords": "si, configuration, troubleshooting","wordcount":  939 ,
         "url": "https:\/\/dependencyhell.net\/2017-02-26-firepower-si\/","datePublished": "2017-04-15T00:00:00+00:00","dateModified": "2017-04-15T00:00:00+00:00","author": {
                 "@type": "Person",
                 "name": "Oliver Kaiser"
@@ -101,7 +101,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Firepower Security Intelligence</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-04-15">2017-04-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;948 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-04-15">2017-04-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;939 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;5 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
@@ -174,13 +174,37 @@
 <li>Apply SI to you access control policy</li>
 </ol>
 <p>To configure a new feed navigate to <strong>Objects &gt; Object Management &gt; Security Intelligence</strong> in FMC UI and choose the appropriate feed type to configure. In this example we will add the malc0de blacklist to FMC and set the update frequency to 30 minutes to make sure our feed is always up to date.</p>
-<p>![si01]({{ site.url }}/images/posts/2017-04-15-Security-Intelligence/si-01.png)</p>
+<a class="lightgallery" href="/img/2017-04-15-Security-Intelligence/si-01.png" title="/img/2017-04-15-Security-Intelligence/si-01.png" data-thumbnail="/img/2017-04-15-Security-Intelligence/si-01.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/2017-04-15-Security-Intelligence/si-01.png"
+            data-srcset="/img/2017-04-15-Security-Intelligence/si-01.png, /img/2017-04-15-Security-Intelligence/si-01.png 1.5x, /img/2017-04-15-Security-Intelligence/si-01.png 2x"
+            data-sizes="auto"
+            alt="/img/2017-04-15-Security-Intelligence/si-01.png" />
+    </a>
 <p>After pressing ok, the feed will be downloaded to FMC and you may proceed with configuring your access control policy to use your SI feed. Navigate to <strong>Policies &gt; Access Control</strong>, select your ACP and navigate to the <strong>Security Intelligence</strong> tab.</p>
 <p>Search for the newly defined SI feed and add it to the blacklist. After you are done with the configuration you have to deploy your configuration for changes to take effect.</p>
-<p>![si01]({{ site.url }}/images/posts/2017-04-15-Security-Intelligence/si-02.png)</p>
+<a class="lightgallery" href="/img/2017-04-15-Security-Intelligence/si-02.png" title="/img/2017-04-15-Security-Intelligence/si-02.png" data-thumbnail="/img/2017-04-15-Security-Intelligence/si-02.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/2017-04-15-Security-Intelligence/si-02.png"
+            data-srcset="/img/2017-04-15-Security-Intelligence/si-02.png, /img/2017-04-15-Security-Intelligence/si-02.png 1.5x, /img/2017-04-15-Security-Intelligence/si-02.png 2x"
+            data-sizes="auto"
+            alt="/img/2017-04-15-Security-Intelligence/si-02.png" />
+    </a>
 <h2 id="traffic-flow">Traffic Flow</h2>
 <p>Security Intelligence is being enforced within SNORT. If you want to whitelist traffic that would be blocked by SI you will need to create a rule in your pre-filter policy (if you use FTD) or add the false positive to your whitelist to make sure traffic to/from the address is not being blocked.</p>
-<p>![si03]({{ site.url }}/images/posts/2017-04-15-Security-Intelligence/si-03.png)</p>
+<a class="lightgallery" href="/img/2017-04-15-Security-Intelligence/si-03.png" title="/img/2017-04-15-Security-Intelligence/si-03.png" data-thumbnail="/img/2017-04-15-Security-Intelligence/si-03.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/2017-04-15-Security-Intelligence/si-03.png"
+            data-srcset="/img/2017-04-15-Security-Intelligence/si-03.png, /img/2017-04-15-Security-Intelligence/si-03.png 1.5x, /img/2017-04-15-Security-Intelligence/si-03.png 2x"
+            data-sizes="auto"
+            alt="/img/2017-04-15-Security-Intelligence/si-03.png" />
+    </a>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <p>If you are interested in in the content of the downloaded feeds you will need to SSH into FMC and check the feeds via CLI. Unfortunately there is no way to use the FMC UI to check the content of the downloaded feeds yet.</p>
 <p>FMC downloads the feeds to the following locations</p>

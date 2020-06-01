@@ -28,7 +28,7 @@ So how exactly should we start analyzing upgrade issues on FMC? Although the UI 
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/dependencyhell.net\/2017-08-04-troubleshooting-firepower-upgrade\/"
-        },"genre": "posts","keywords": "upgrade, troubleshooting","wordcount":  381 ,
+        },"genre": "posts","keywords": "upgrade, troubleshooting","wordcount":  378 ,
         "url": "https:\/\/dependencyhell.net\/2017-08-04-troubleshooting-firepower-upgrade\/","datePublished": "2017-08-04T00:00:00+00:00","dateModified": "2017-08-04T00:00:00+00:00","author": {
                 "@type": "Person",
                 "name": "Oliver Kaiser"
@@ -103,7 +103,7 @@ So how exactly should we start analyzing upgrade issues on FMC? Although the UI 
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Troubleshooting Firepower Upgrade</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-08-04">2017-08-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;381 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-08-04">2017-08-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;378 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
@@ -118,7 +118,15 @@ So how exactly should we start analyzing upgrade issues on FMC? Although the UI 
             </div><div class="content" id="content"><p>At some point we have all come across update issues with error messages like &ldquo;Update install failed.&quot;, without any further details available. In my opinion there should be more details on an UI to further troubleshoot issues like that, but when it comes to upgrade procedures on FMC that is about it.</p>
 <p>So how exactly should we start analyzing upgrade issues on FMC? Although the UI output is rather generic there is lots of information to be found using the CLI. Each upgrade procedure consists of a variaty of scripts that are being executed on the device that is being upgraded.</p>
 <p>In my example I have started an upgrade of a firepower module which failed with the following message:</p>
-<p>![upgrade-failure]({{ site.url }}/images/posts/2017-08-04-Troubleshooting-Firepower-Upgrade/deployment-failure.png)</p>
+<a class="lightgallery" href="/img/2017-08-04-Troubleshooting-Firepower-Upgrade/deployment-failure.png" title="/img/2017-08-04-Troubleshooting-Firepower-Upgrade/deployment-failure.png" data-thumbnail="/img/2017-08-04-Troubleshooting-Firepower-Upgrade/deployment-failure.png">
+        <img
+            class="lazyload"
+            src="/svg/loading/normal.min.svg"
+            data-src="/img/2017-08-04-Troubleshooting-Firepower-Upgrade/deployment-failure.png"
+            data-srcset="/img/2017-08-04-Troubleshooting-Firepower-Upgrade/deployment-failure.png, /img/2017-08-04-Troubleshooting-Firepower-Upgrade/deployment-failure.png 1.5x, /img/2017-08-04-Troubleshooting-Firepower-Upgrade/deployment-failure.png 2x"
+            data-sizes="auto"
+            alt="/img/2017-08-04-Troubleshooting-Firepower-Upgrade/deployment-failure.png" />
+    </a>
 <p>To look into the logs you will have to ssh to our sensor and change to expert mode (bash)</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
