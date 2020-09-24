@@ -17,7 +17,7 @@
     <pubDate>Fri, 04 Aug 2017 00:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://dependencyhell.net/2017-08-04-troubleshooting-firepower-upgrade/</guid>
-    <description><![CDATA[<p>At some point we have all come across update issues with error messages like &ldquo;Update install failed.&quot;, without any further details available. In my opinion there should be more details on an UI to further troubleshoot issues like that, but when it comes to upgrade procedures on FMC that is about it.</p>
+    <description><![CDATA[<p>At some point we have all come across update issues with error messages like &ldquo;Update install failed.&rdquo;, without any further details available. In my opinion there should be more details on an UI to further troubleshoot issues like that, but when it comes to upgrade procedures on FMC that is about it.</p>
 <p>So how exactly should we start analyzing upgrade issues on FMC? Although the UI output is rather generic there is lots of information to be found using the CLI. Each upgrade procedure consists of a variaty of scripts that are being executed on the device that is being upgraded.</p>]]></description>
 </item></channel>
 </rss>

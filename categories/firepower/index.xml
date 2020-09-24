@@ -45,7 +45,7 @@
     <pubDate>Fri, 04 Aug 2017 00:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://dependencyhell.net/2017-08-04-troubleshooting-firepower-upgrade/</guid>
-    <description><![CDATA[<p>At some point we have all come across update issues with error messages like &ldquo;Update install failed.&quot;, without any further details available. In my opinion there should be more details on an UI to further troubleshoot issues like that, but when it comes to upgrade procedures on FMC that is about it.</p>
+    <description><![CDATA[<p>At some point we have all come across update issues with error messages like &ldquo;Update install failed.&rdquo;, without any further details available. In my opinion there should be more details on an UI to further troubleshoot issues like that, but when it comes to upgrade procedures on FMC that is about it.</p>
 <p>So how exactly should we start analyzing upgrade issues on FMC? Although the UI output is rather generic there is lots of information to be found using the CLI. Each upgrade procedure consists of a variaty of scripts that are being executed on the device that is being upgraded.</p>]]></description>
 </item><item>
     <title>Firepower Management Center HA</title>
@@ -70,11 +70,11 @@ When I first started looking around on how to do this from a firepower sensor cl
     <guid>https://dependencyhell.net/2017-05-27-anyconnect-for-ftd/</guid>
     <description><![CDATA[<p>AnyConnect has been a high priority roadmap item for Firepower Threat Defense and was planned to be released in version 6.2.1 with the new Firepower 2100 appliances in april. After some delays 6.2.1 was released on the 15th of May and firepower 2100 orders started shipping. So were are we standing at the moment? What platform support AnyConnect with FTD and what features are really working?</p>]]></description>
 </item><item>
-    <title>FTD Software Quality</title>
-    <link>https://dependencyhell.net/2017-05-06-ftd-software-quality/</link>
-    <pubDate>Fri, 05 May 2017 00:00:00 &#43;0000</pubDate>
+    <title>Firepower Security Intelligence</title>
+    <link>https://dependencyhell.net/2017-02-26-firepower-si/</link>
+    <pubDate>Sat, 15 Apr 2017 00:00:00 &#43;0000</pubDate>
     <author>Author</author>
-    <guid>https://dependencyhell.net/2017-05-06-ftd-software-quality/</guid>
-    <description><![CDATA[<p>It has been over a year since the release of Firepower Threat Defense and due to some recent announcements I thought it would be a good time to take a look at current challenges we face with FTD and how Cisco is trying to get back on the track.</p>]]></description>
+    <guid>https://dependencyhell.net/2017-02-26-firepower-si/</guid>
+    <description><![CDATA[<p>Security Intelligence (SI) is used to block connections based on reputation on firepower systems. It can be used to block traffic based on IP, DNS and URL and is useful as a first line of defense to blacklist undesirable connections from/to public ip addresses.</p>]]></description>
 </item></channel>
 </rss>

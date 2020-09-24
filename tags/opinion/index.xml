@@ -4,14 +4,7 @@
         <link>https://dependencyhell.net/tags/opinion/</link>
         <description>opinion - Tag - Dependency Hell</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
-            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Fri, 05 May 2017 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/tags/opinion/" rel="self" type="application/rss+xml" /><item>
-    <title>FTD Software Quality</title>
-    <link>https://dependencyhell.net/2017-05-06-ftd-software-quality/</link>
-    <pubDate>Fri, 05 May 2017 00:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://dependencyhell.net/2017-05-06-ftd-software-quality/</guid>
-    <description><![CDATA[<p>It has been over a year since the release of Firepower Threat Defense and due to some recent announcements I thought it would be a good time to take a look at current challenges we face with FTD and how Cisco is trying to get back on the track.</p>]]></description>
-</item><item>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Fri, 27 Jan 2017 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/tags/opinion/" rel="self" type="application/rss+xml" /><item>
     <title>Firepower 6.2.0 Release</title>
     <link>https://dependencyhell.net/2017-01-27-firepower-6.2-release/</link>
     <pubDate>Fri, 27 Jan 2017 00:00:00 &#43;0000</pubDate>
