@@ -26,7 +26,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/dependencyhell.net\/2017-07-10-fmc-ha\/"
-        },"genre": "posts","keywords": "architecture, configuration","wordcount":  1305 ,
+        },"genre": "posts","keywords": "architecture, configuration","wordcount":  1245 ,
         "url": "https:\/\/dependencyhell.net\/2017-07-10-fmc-ha\/","datePublished": "2017-07-10T00:00:00+00:00","dateModified": "2017-07-10T00:00:00+00:00","author": {
                 "@type": "Person",
                 "name": "Oliver Kaiser"
@@ -101,8 +101,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Firepower Management Center HA</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="https://dependencyhell.net" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Oliver Kaiser</a></span>&nbsp;<span class="post-category">included in <a href="/categories/firepower/"><i class="far fa-folder fa-fw"></i>firepower</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-07-10">2017-07-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1305 words&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2017-07-10">2017-07-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1245 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;6 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -119,7 +119,11 @@
             <li><a href="#device-not-registered-to-secondary-fmc-after-ha-configuration">Device not registered to secondary FMC after HA configuration</a></li>
             <li><a href="#synchronization-stopped-during-fmc-backup">Synchronization stopped during FMC backup</a></li>
             <li><a href="#log-files">Log Files</a></li>
-            <li><a href="#cli-tools">CLI Tools</a></li>
+            <li><a href="#cli-tools">CLI Tools</a>
+              <ul>
+                <li><a href="#manage_hadcpl">manage_HADC.pl</a></li>
+              </ul>
+            </li>
           </ul>
         </li>
       </ul>
@@ -128,9 +132,9 @@
 </nav></div>
             </div><div class="content" id="content"><p>Configuring HA for FMC is pretty straight forward but how exactly does it work and how can we troubleshoot HA if it is not working correctly? In this post I will show you what FMC HA is doing behind the scenes and tools we have available to take a deeper look into the system and uncover issues.</p>
 <h2 id="fmc-high-availability">FMC High Availability</h2>
-<p>High Availability is available on physical Firepower Management Center appliances. It lets you create an active/standby HA solution which does not require layer 2 adjacency (making it possible to have real HA over multiple sites without extending layer 2 across sites).</p>
+<p>High Availability is available on physical Firepower Management Center appliances (and FMCv since 6.7.0). It lets you create an active/standby HA solution which does not require layer 2 adjacency (making it possible to have real HA over multiple sites without extending layer 2 across sites).</p>
 <p>FMC HA will create a second &ldquo;manager&rdquo; registration on your sensor resulting in two sftunnel connections. One to your primary FMC and one to your secondary FMC.</p>
-<p>It is a cold-standby solution which forces you to promote the passive FMC to active in case of failure of the primary device, but dont worry&hellip; all your events will be logged to both FMCs so in case of device failure you should not lose any events sent from the sensor to FMC. Just promote the passive FMC and it will start up all the necessary processes and become the active unit.</p>
+<p>It is a cold-standby solution that does not failover without a manual interaction. All events are being logged to both FMCs so in case of device failure you should not lose any events sent from the sensor to FMC. Just promote the passive FMC and it will start up all the necessary processes and become the active unit, allowing you to perform configuration changes from the secondary unit.</p>
 <p>Behind the scenes the HA procedure consists of a sybase database mirror and a transaction framework that will make sure data is being replicated from the active to the passive management center.</p>
 <a class="lightgallery" href="/img/2017-07-10-FMC-HA/fmc-ha-design.png" title="/img/2017-07-10-FMC-HA/fmc-ha-design.png" data-thumbnail="/img/2017-07-10-FMC-HA/fmc-ha-design.png">
         <img
@@ -144,13 +148,13 @@
 <h3 id="configuration">Configuration</h3>
 <p>Before configuring FMC HA make sure that&hellip;</p>
 <ul>
-<li>Hardware is identical (you cant build HA between different hardware appliances)</li>
-<li>Software release is identical</li>
-<li>There are no sensors registered to the secondary FMC. If so, remove registration</li>
+<li>Hardware is identical (no mix and match between virtual and/or physical form factors)</li>
+<li>Software release is identical on both FMCs</li>
+<li>There are no sensors registered to the secondary FMC</li>
 <li>You have a working backup (I havent seen a case where HA initialization caused any issues that would require re-imaging&hellip; but you never know :)</li>
 </ul>
-<p>To configure HA login to FMC UI, go to <code>Integration &gt; High Availability</code>  and define a secondary peer. Then you grab some coffee&hellip; because it will take some time and you will see some warnings that will make you think it didnt work, but just be patient.</p>
-<p>After some minutes the status of HA Synchcronization should change to &ldquo;OK&rdquo; like this:</p>
+<p>To configure High Availability login to FMC, navigate to <code>Integration &gt; High Availability</code>  and define a secondary peer. Then  grab some coffee and be patient. It will take some time and you will see some warnings that might be misleading, but before jumping into a CLI to start troubleshooting wait about 20 minutes for the procedure to finish. Depending on the number of sensors managed the process might only take a few minutes, but from experience it&rsquo;s more in the 15-30 minutes range.</p>
+<p>After some minutes the status of HA Synchronization should change to &ldquo;OK&rdquo; like this:</p>
 <a class="lightgallery" href="/img/2017-07-10-FMC-HA/fmc-ha-status.png" title="/img/2017-07-10-FMC-HA/fmc-ha-status.png" data-thumbnail="/img/2017-07-10-FMC-HA/fmc-ha-status.png">
         <img
             class="lazyload"
@@ -160,15 +164,15 @@
             data-sizes="auto"
             alt="/img/2017-07-10-FMC-HA/fmc-ha-status.png" />
     </a>
-<p>At this point your sensors should be registered with your passive FMC and should be listed when you navigate to the devices page on the passive FMC.</p>
+<p>At this point your sensors should be registered with your secondary FMC and should be listed on the device management page</p>
 <h3 id="upgrade-procedure">Upgrade Procedure</h3>
 <p>To upgrade an FMC in HA you will have to follow the following instructions:</p>
 <ul>
 <li>Manually stop HA synchronization</li>
 <li>Upgrade the passive FMC</li>
 <li>Wait for the upgrade to finish (HA state may change to degraded, which is normal)</li>
-<li>Upgrade the  active FMC</li>
-<li>Grab a coffee and give it some time to boot up after the upgrade procedure</li>
+<li>Upgrade the  active FMC (Upgrade cannot be started while standby FMC is not finished)</li>
+<li>Wait for active FMC to reboot and all processes to start up</li>
 <li>Promote the primary FMC to become active</li>
 <li>Deploy configuration to your sensors to verify everything is working as expected</li>
 </ul>
@@ -182,9 +186,9 @@
 <h4 id="log-files">Log Files</h4>
 <p>Events related to FMC HA are being logged to <code>/var/log/syncd.log</code>. In case you have any issues that cant be solved via the UI make sure to check this logfile for further details.</p>
 <h4 id="cli-tools">CLI Tools</h4>
-<p>FMC ships with two perl scripts that can be used to query for high availability information. I would recommend not using these tools to change any configuration parameters but only to verify the current state of FMC HA. In the past I have used<code>manage_HADC.pl</code> to switch roles, break HA etc. and did not have any issues but keep in mind that I was working on a non production environment.</p>
-<p>manage_HADC.pl</p>
-<p>manage_HADC.pl provides a cli interface to query the current HA state and do some management tasks that are also exposed using the UI (atleast to some degree)</p>
+<p>FMC ships with two perl scripts that can be used to query for high availability information. I would recommend not using these tools to change any configuration parameters but only to verify the current state of FMC HA. In the past I have used<code>manage_HADC.pl</code> to switch roles, break HA etc. and did not encounter any problems.</p>
+<h5 id="manage_hadcpl">manage_HADC.pl</h5>
+<p>manage_HADC.pl provides a command line interface to query the current HA state and execute management tasks that are also available on the UI.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -200,13 +204,9 @@
 </span><span class="lnt">11
 </span><span class="lnt">12
 </span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-fallback" data-lang="fallback">****************  Configuration Utility  **************
-
  1   Show HA Status
  2   Register as Secondary HA FMC
  3   Register as Primary HA FMC
@@ -218,9 +218,7 @@
  9   Break HA - keep devices
  10  Break HA - delete devices
  0   Exit
-
 **************************************************************
-
 </code></pre></td></tr></table>
 </div>
 </div><p>Option 1 is probably the only option you want to select. It will display the current state of HA with some additional details</p>
@@ -239,25 +237,9 @@
 </span><span class="lnt">11
 </span><span class="lnt">12
 </span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">SYNC_ACTIVE: 1 at /usr/local/sf/lib/perl/5.10.1/SF/Synchronize.pm line 456, &lt;STDIN&gt; line 1.
-Found running Synchronization task: Initializing at /usr/local/sf/lib/perl/5.10.1/SF/Transaction/HADC.pm line 232.
-Sybase state :  at /usr/local/sf/lib/perl/5.10.1/SF/Synchronize.pm line 654.
-Check peer ftd01.example.com... at /usr/local/sf/lib/perl/5.10.1/SF/PeerManager/Peers.pm line 51.
-Check peer ftd02.example.com... at /usr/local/sf/lib/perl/5.10.1/SF/PeerManager/Peers.pm line 51.
-Check peer fmc-secondary... at /usr/local/sf/lib/perl/5.10.1/SF/PeerManager/Peers.pm line 51.
-Sybase state :  at /usr/local/sf/lib/perl/5.10.1/SF/Synchronize.pm line 747.
-Sync status :Synchronization Task In-progress  at /usr/local/sf/lib/perl/5.10.1/SF/Synchronize.pm line 748.
-Found running Synchronization task: Initializing at /usr/local/sf/lib/perl/5.10.1/SF/Transaction/HADC.pm line 232.
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">(...)
 STATUS:
 Active HA DC: 1 
 HA_SYNC: SYNCHRONIZATION_HADC 

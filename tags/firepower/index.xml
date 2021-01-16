@@ -4,7 +4,15 @@
         <link>https://dependencyhell.net/tags/firepower/</link>
         <description>firepower - Tag - Dependency Hell</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
-            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Thu, 26 Jan 2017 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/tags/firepower/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Sat, 16 Jan 2021 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/tags/firepower/" rel="self" type="application/rss+xml" /><item>
+    <title>Firepower Datasheet</title>
+    <link>https://dependencyhell.net/2021-01-16-firepower-datasheet/</link>
+    <pubDate>Sat, 16 Jan 2021 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2021-01-16-firepower-datasheet/</guid>
+    <description><![CDATA[Firepower Datasheet The purpose of this document is to provide an overview of platform limits and limitations for the Cisco Firepower platform. I created this overview to document information that is available from different CiscoLive presentations, administration guides and Cisco datasheets.
+Hardware End-of-Life ASA    Model Replacement ASA FPS FTD     ASA 5505 FPR1010 9.2 N/A N/A   ASA 5506-X FPR1010 TBD 6.2.3 6.2.3   ASA 5512-X FPR1120 9.]]></description>
+</item><item>
     <title>Firepower Process Management</title>
     <link>https://dependencyhell.net/2017-01-26-firepower-process-management/</link>
     <pubDate>Thu, 26 Jan 2017 00:00:00 &#43;0000</pubDate>

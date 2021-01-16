@@ -4,20 +4,21 @@
         <link>https://dependencyhell.net/posts/</link>
         <description>All Posts | Dependency Hell</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>oliver.kaiser@outlook.com (Oliver Kaiser)</managingEditor>
-            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Tue, 19 May 2020 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/posts/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>oliver.kaiser@outlook.com (Oliver Kaiser)</webMaster><lastBuildDate>Sat, 16 Jan 2021 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://dependencyhell.net/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>Firepower Datasheet</title>
+    <link>https://dependencyhell.net/2021-01-16-firepower-datasheet/</link>
+    <pubDate>Sat, 16 Jan 2021 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://dependencyhell.net/2021-01-16-firepower-datasheet/</guid>
+    <description><![CDATA[Firepower Datasheet The purpose of this document is to provide an overview of platform limits and limitations for the Cisco Firepower platform. I created this overview to document information that is available from different CiscoLive presentations, administration guides and Cisco datasheets.
+Hardware End-of-Life ASA    Model Replacement ASA FPS FTD     ASA 5505 FPR1010 9.2 N/A N/A   ASA 5506-X FPR1010 TBD 6.2.3 6.2.3   ASA 5512-X FPR1120 9.]]></description>
+</item><item>
     <title>Patching Identity Service Engine (Standalone)</title>
     <link>https://dependencyhell.net/2020-05-19-ise-standalone-patch/</link>
     <pubDate>Tue, 19 May 2020 00:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://dependencyhell.net/2020-05-19-ise-standalone-patch/</guid>
     <description><![CDATA[Patching Identity Service Engine (Standalone) Although it is easier to update ISE through the graphical user interface in this post we will use the CLI to install the newest patch to ISE 2.4. An advantage of utilizing the CLI is that we can control the order in which to install the patch to different nodes which is being taken care of automatically if the GUI is used to update ISE.]]></description>
-</item><item>
-    <title>FTD Feature Limitations</title>
-    <link>https://dependencyhell.net/2018-04-08-ftd-unsupported-features/</link>
-    <pubDate>Fri, 06 Apr 2018 00:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://dependencyhell.net/2018-04-08-ftd-unsupported-features/</guid>
-    <description><![CDATA[<p>Since I see this topic coming up every now and then I thought it would be a good idea to create an overview of unsupported features for FTD in comparison to ASA.</p>]]></description>
 </item><item>
     <title>Automating Accesspolicy changes</title>
     <link>https://dependencyhell.net/2017-08-27-automating-acp-bulk-changes/</link>
@@ -52,7 +53,7 @@
     <pubDate>Fri, 04 Aug 2017 00:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://dependencyhell.net/2017-08-04-troubleshooting-firepower-upgrade/</guid>
-    <description><![CDATA[<p>At some point we have all come across update issues with error messages like &ldquo;Update install failed.&rdquo;, without any further details available. In my opinion there should be more details on an UI to further troubleshoot issues like that, but when it comes to upgrade procedures on FMC that is about it.</p>
+    <description><![CDATA[<p>At some point we have all come across update issues with error messages like &ldquo;Update install failed.&quot;, without any further details available. In my opinion there should be more details on an UI to further troubleshoot issues like that, but when it comes to upgrade procedures on FMC that is about it.</p>
 <p>So how exactly should we start analyzing upgrade issues on FMC? Although the UI output is rather generic there is lots of information to be found using the CLI. Each upgrade procedure consists of a variaty of scripts that are being executed on the device that is being upgraded.</p>]]></description>
 </item><item>
     <title>Firepower Management Center HA</title>
